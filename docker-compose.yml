@@ -1,0 +1,12 @@
+version: "3"
+services:
+  app:
+    build: .
+    volumes:
+      - ".:/app"
+    # command: sh -c "yarn dev"
+    ports:
+      - "5173:5173"
+      - "8080:8080"
+    tty: true
+    platform: linux/amd64
