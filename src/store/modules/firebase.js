@@ -10,8 +10,7 @@ const state = () => ({
 const getters = {};
 const actions = {
 
-  },
-};
+  }
 const mutations = {
   setApp(state, firebase) {
     state.app = firebase;
