@@ -1,12 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      sample app
-    </v-app-bar>
+    <v-app-bar app color="primary" dark> sample app </v-app-bar>
 
     <v-main>
       <SignIn />
@@ -15,10 +9,10 @@
 </template>
 
 <script>
-import SignIn from './components/SignIn';
+import SignIn from "./components/SignIn";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     SignIn,
@@ -29,5 +23,3 @@ export default {
   }),
 };
 </script>
-
-

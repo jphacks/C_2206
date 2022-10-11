@@ -14,13 +14,10 @@
   </v-form>
 </template>
 
-
 <script>
 import { mapState } from "vuex";
-import ErrorMsg from "./ErrorMsg.vue";
 export default {
   name: "SignIn",
-  components: { ErrorMsg },
   data: () => ({
     email: "",
     password: "",
@@ -38,4 +35,3 @@ export default {
   },
 };
 </script>
-

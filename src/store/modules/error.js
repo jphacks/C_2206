@@ -5,15 +5,15 @@ const state = () => ({
 const getters = {};
 const actions = {};
 const mutations = {
-    setErrorMsg(state, message){
-        state.errorMessage = message
-    },
-    addErrorMsg(state, message){
-        state.errorMessage += message
-    },
-    delErrorMsg(state){
-        state.errorMessage = ""
-    }
+  setErrorMsg(state, message) {
+    state.errorMessage = message;
+  },
+  addErrorMsg(state, message) {
+    state.errorMessage += message;
+  },
+  delErrorMsg(state) {
+    state.errorMessage = "";
+  },
 };
 
 export default {
