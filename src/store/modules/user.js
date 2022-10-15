@@ -1,8 +1,8 @@
-import { getAuth } from "firebase/auth";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const state = () => ({
-  user: null,
+  user: getLoginedUser(), // TODO: 初期値nullの方がいいかもしれない
 });
 
 const getters = {
@@ -14,7 +14,6 @@ const actions = {
   signIn({ commit }, p) {
     createUserWithEmailAndPassword(getAuth(), p.email, p.password)
       .then((userCredential) => {
-        console.log("signined" + userCredential);
         commit("setUser", userCredential.user);
       })
       .catch((error) => {
@@ -39,6 +38,20 @@ const actions = {
         return errorCode, errorMessage;
       });
   },
+  signOut({ commit }) {
+    signOut(getAuth())
+      .then(() => {
+        console.log("sign out ");
+        commit("setUser", null);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        commit("error/addErrorMsg", errorMessage, { root: true });
+        console.log(errorCode + errorMessage);
+        return errorCode, errorMessage;
+      });
+  },
 };
 const mutations = {
   setUser(state, user) {
@@ -46,6 +59,16 @@ const mutations = {
   },
 };
 
+const getLoginedUser = () => {
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      return user;
+    } else {
+      return null;
+    }
+  });
+};
 export default {
   namespaced: true,
   state,

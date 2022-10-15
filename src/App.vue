@@ -3,20 +3,16 @@
     <v-app-bar app color="primary" dark> sample app </v-app-bar>
 
     <v-main>
-      <SignIn />
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import SignIn from "./components/SignIn";
-
 export default {
   name: "App",
 
-  components: {
-    SignIn,
-  },
+  components: {},
 
   data: () => ({
     //
