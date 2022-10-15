@@ -1,12 +1,13 @@
 // Your web app's Firebase configuration
 import { initializeApp } from "firebase/app";
 
-export const firebaseConfig = {
-  apiKey: "AIzaSyCxtMaukKo8JF8nse-bWdXjbzlqsou-PjU",
-  authDomain: "jphack2022-test.firebaseapp.com",
-  projectId: "jphack2022-test",
-  storageBucket: "jphack2022-test.appspot.com",
-  messagingSenderId: "634163590958",
-  appId: "1:634163590958:web:48182ad2dc71cca17eecbf",
+const firebaseConfig = {
+  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+  authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.VUE_APP_FIREBASE_APPID,
+  measurementId: process.env.VUE_APP_FIREBASE_MESUREMENT_ID,
 };
 export const app = initializeApp(firebaseConfig);
