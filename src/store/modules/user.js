@@ -17,25 +17,25 @@ const actions = {
         commit("setUser", userCredential.user);
       })
       .catch((error) => {
-        console.log("error occured");
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        commit("error/addErrorMsg", errorMessage, { root: true });
-        console.log(errorCode + errorMessage);
-        return errorCode, errorMessage;
+        commit("error/addErrorMsg", error.message, { root: true });
+        console.log(error.code + error.message);
+        return error;
       });
   },
   login({ commit }, p) {
     signInWithEmailAndPassword(getAuth(), p.email, p.password)
       .then((userCredential) => {
         commit("setUser", userCredential.user);
+        // dispatch("firebase/reloadUserInfo", null, { root: true }).catch((error) => {
+        //   commit("error/addErrorMsg", error.message, { root: true });
+        //   console.log(error.code + error.message);
+        //   return error;
+        // });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        commit("error/addErrorMsg", errorMessage, { root: true });
-        console.log(errorCode + errorMessage);
-        return errorCode, errorMessage;
+        commit("error/addErrorMsg", error.message, { root: true });
+        console.log(error.code + error.message);
+        return error;
       });
   },
   signOut({ commit }) {
@@ -45,11 +45,9 @@ const actions = {
         commit("setUser", null);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        commit("error/addErrorMsg", errorMessage, { root: true });
-        console.log(errorCode + errorMessage);
-        return errorCode, errorMessage;
+        commit("error/addErrorMsg", error.message, { root: true });
+        console.log(error.code + error.message);
+        return error;
       });
   },
 };
