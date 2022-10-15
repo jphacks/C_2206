@@ -1,7 +1,7 @@
 <template>
   <v-form>
   <v-container fluid fill-height>
-    <p class="text-h2 mx-auto mt-3">PlanPlant</p>
+    <p class="text-h2 mx-auto mt-5">PlanPlant</p>
   <v-row class="mx-14 mt-11" align-content="center">
     
         <v-text-field 
