@@ -1,23 +1,19 @@
 <template>
   <div class="home">
-    <SignUpForm />
-    <LoginForm />
+    <p>this is home</p>
     <v-btn @click="signOut">sign out</v-btn>
   </div>
 </template>
 
 <script>
-import SignUpForm from "@/components/SignUpForm.vue";
-import LoginForm from "@/components/LoginForm.vue";
 export default {
   name: "HomeView",
-  components: {
-    SignUpForm,
-    LoginForm,
-  },
+  components: {},
   methods: {
     signOut() {
-      this.$store.dispatch("user/signOut");
+      this.$store.dispatch("user/signOut").then(() => {
+        this.$router.push({ name: "top" });
+      });
     },
   },
 };

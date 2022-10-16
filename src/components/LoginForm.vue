@@ -19,7 +19,7 @@
         <v-btn class="info px-16 py-6 text-body-1 mx-auto" @click="login">ログイン</v-btn>
       </v-row>
       <v-row align-content="center">
-        <a class="mx-auto mt-10">アカウントを作成</a>
+        <router-link to="signup" class="mx-auto mt-10">アカウントを作成</router-link>
       </v-row>
     </v-container>
   </v-form>
@@ -37,7 +37,9 @@ export default {
   }),
   methods: {
     login() {
-      this.$store.dispatch("user/login", { email: this.email, password: this.password });
+      this.$store.dispatch("user/login", { email: this.email, password: this.password }).then(() => {
+        this.$router.push({ name: "home" });
+      });
     },
   },
   computed: {
