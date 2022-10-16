@@ -25,7 +25,7 @@ const actions = {
     useUser(async (user) => {
       const userDoc = doc(db, "users", user.uid);
       await updateDoc(userDoc, {
-        goal: arrayUnion({ ...goal }),
+        goals: arrayUnion({ ...goal }),
       });
       await getDoc(userDoc).then((userInfo) => {
         commit("setUserInfo", userInfo.data());
@@ -37,10 +37,50 @@ const actions = {
     useUser(async (user) => {
       const userDoc = doc(db, "users", user.uid);
       let userInfo = await (await getDoc(userDoc)).data();
-      if (userInfo.goal) {
-        const goals = userInfo.goal.filter((goal) => (goal.id != removeId));
+      if (userInfo.goals) {
+        const goals = userInfo.goals.filter((goal) => goal.id != removeId);
         await updateDoc(userDoc, {
-          goal: [...goals],
+          goals: [...goals],
+        });
+      }
+      await getDoc(userDoc).then((userInfo) => {
+        commit("setUserInfo", userInfo.data());
+      });
+    });
+  },
+  // 記録を追加する
+  async addRecord({ commit }, record) {
+    useUser(async (user) => {
+      const userDoc = doc(db, "users", user.uid);
+      await getDoc(userDoc).then(async (data) => {
+        let userInfo = data.data();
+        if (userInfo.records) {
+          if (userInfo.records.length > 0) {
+            userInfo.records = userInfo.records.concat([record]);
+          } else {
+            userInfo.records = [record];
+          }
+        }
+        await updateDoc(userDoc, {
+          records: arrayUnion({ ...record }),
+          recordSummary: userInfo.records ? updateRecordSummary(userInfo) : [],
+        });
+      });
+      await getDoc(userDoc).then((userInfo) => {
+        commit("setUserInfo", userInfo.data());
+      });
+    });
+  },
+  // ある記録を削除する
+  async removeRecord({ commit }, removeId) {
+    useUser(async (user) => {
+      const userDoc = doc(db, "users", user.uid);
+      let userInfo = await (await getDoc(userDoc)).data();
+      if (userInfo.records) {
+        const records = userInfo.records.filter((record) => record.id != removeId);
+        await updateDoc(userDoc, {
+          records: [...records],
+          recordSummary: updateRecordSummary(userInfo),
         });
       }
       await getDoc(userDoc).then((userInfo) => {
@@ -65,14 +105,82 @@ const syncUserInfo = async (user) => {
   } else {
     await setDoc(doc(db, "users", user.uid), {
       userName: user.displayName,
-      goal: [],
+      goals: [],
       records: [],
-      recordSummary: {
-        achevement: 0,
-      },
+      recordSummary: [
+        {
+          achevement: 0,
+        },
+      ],
     });
     const docSnap = await getDoc(doc(db, "users", user.uid));
     return docSnap.data();
+  }
+};
+
+const updateRecordSummary = (userInfo) => {
+  const goals = userInfo.goals;
+  const records = userInfo.records;
+  return goals.map((goal) => {
+    const { sum, achevement } = calcRecordSum(records, goal);
+    return {
+      goalId: goal.id,
+      achevement: achevement,
+      recordSum: {
+        type: goal.dayGoal.type,
+        value: sum,
+      },
+    };
+  });
+};
+
+const calcRecordSum = (originalRecords, goal) => {
+  const records = originalRecords.filter((r) => r.goalId == goal.id);
+  const type = goal.dayGoal.type;
+  /**
+   * 目標を開始してから今日までの期間(単位：日)
+   * @type(number)
+   */
+  const daysUntilToday = Math.floor((Date.now() - (goal.startDate.toMillis()))/1000/3600/24);
+  /**
+   * 目標に設定した継続期間(単位：日)
+   * @type(number)
+   */
+  const period = Math.floor((goal.endDate.toDate().getTime() - goal.startDate.toDate().getTime())/1000/3600/24);
+  if (type == "timestamp") {
+    /**
+     *記録の合計の目標です(単位：ミリ秒)
+     *@type (number)
+     */
+    const goalRecordSum = Math.floor(period * goal.dayGoal.value.toDate().getTime());
+    /**
+     * 今までの記録の合計です(ミリ秒)
+     *@type (number)
+     */
+    const sum = records.reduce((sum, r) => {
+      if (r.value.type == "timestamp") {
+        const time = r.value.value.toDate();
+        return new Date(sum.getTime() + time.getTime());
+      }
+    }, new Date(0)).getTime();
+    /**
+     * 現時点での目標の達成度です。単位はパーセント。別名しなしな度
+     * （合計/日数）＊今日までの日数 と今日までの記録の合計の比で算出する
+     * @type(number)
+     */
+    const calcAchevement = () => {
+      if (daysUntilToday == 0 || goalRecordSum == 0 || period == 0) return 0;
+      return Math.floor((sum / ((goalRecordSum / period) * daysUntilToday)) * 100);
+    };
+    const achevement = calcAchevement();
+    return { sum, achevement };
+  } else if (type == "count" || type == "bool") {
+    const goalRecordSum = period * goal.dayGoal.value.toDate();
+    const sum = records.reduce((sum, r) => {
+      return sum + r;
+    }, 0);
+    const achevement = Math.floor((sum / ((goalRecordSum / period) * daysUntilToday)) * 100);
+    return { sum, achevement };
   }
 };
 

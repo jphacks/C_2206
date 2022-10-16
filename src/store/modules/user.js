@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } f
 
 const state = () => ({
   user: getAuth().currentUser, // TODO: 初期値nullの方がいいかもしれない
+  currentGoalId: ""
 });
 
 const getters = {
@@ -48,6 +49,9 @@ const mutations = {
   setUser(state, user) {
     state.user = user;
   },
+  setCurrentGoal(state, goalId){
+    state.currentGoalId = goalId
+  }
 };
 
 export default {

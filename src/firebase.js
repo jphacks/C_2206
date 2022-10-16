@@ -20,6 +20,8 @@ export const useUser = (callback) => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       callback(user);
+    }else{
+      throw("No user is signed in.")
     }
   });
 };

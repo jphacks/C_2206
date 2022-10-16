@@ -1,8 +1,6 @@
 <template>
   <div class="home">
-
     <LoginForm />
-    
   </div>
 </template>
 
@@ -14,7 +12,7 @@ export default {
     LoginForm,
   },
   methods: {
-    
+
   },
 };
 </script>
