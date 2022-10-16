@@ -8,16 +8,16 @@ const state = () => ({
 
 const getters = {
   getUser({ state }) {
-    return state.user
+    return state.user;
   },
 };
 const actions = {
-  reloadUser({commit}){
-    useUser((user)=>{
-      commit("setUser", user)
-    })
+  reloadUser({ commit }) {
+    useUser((user) => {
+      commit("setUser", user);
+    });
   },
-  signIn({ commit, dispatch }, p) {
+  signUp({ commit, dispatch }, p) {
     createUserWithEmailAndPassword(getAuth(), p.email, p.password)
       .then((userCredential) => {
         commit("setUser", userCredential.user);
@@ -33,6 +33,7 @@ const actions = {
         return error;
       });
   },
+
   login({ commit, dispatch }, p) {
     signInWithEmailAndPassword(getAuth(), p.email, p.password)
       .then((userCredential) => {

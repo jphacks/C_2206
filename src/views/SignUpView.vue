@@ -1,19 +1,15 @@
 <template>
-  <div class="home">
+  <div class="signup">
     <SignUpForm />
-    <LoginForm />
-    <v-btn @click="signOut">sign out</v-btn>
   </div>
 </template>
 
 <script>
 import SignUpForm from "@/components/SignUpForm.vue";
-import LoginForm from "@/components/LoginForm.vue";
 export default {
-  name: "HomeView",
+  name: "SignUpView",
   components: {
     SignUpForm,
-    LoginForm,
   },
   methods: {
     signOut() {
