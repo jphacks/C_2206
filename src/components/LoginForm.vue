@@ -18,6 +18,9 @@
       <v-row class="mx-10" align-content="center">
         <v-btn class="info px-16 py-6 text-body-1 mx-auto" @click="login">ログイン</v-btn>
       </v-row>
+      <v-row class="mx-10" align-content="center">
+        <ErrorMsg/>
+      </v-row>
       <v-row align-content="center">
         <router-link to="signup" class="mx-auto mt-10">アカウントを作成</router-link>
       </v-row>
@@ -27,23 +30,28 @@
 
 <script>
 import { mapState } from "vuex";
+import ErrorMsg from "./ErrorMsg.vue";
 export default {
-  name: "LoginForm",
-  data: () => ({
-    showPassword: false,
-    email: "",
-    password: "",
-    uid: "",
-  }),
-  methods: {
-    login() {
-      this.$store.dispatch("user/login", { email: this.email, password: this.password }).then(() => {
-        this.$router.push({ name: "home" });
-      });
+    name: "LoginForm",
+    data: () => ({
+        showPassword: false,
+        email: "",
+        password: "",
+        uid: "",
+    }),
+    methods: {
+        login() {
+            this.$store.dispatch("user/login", { email: this.email, password: this.password }).then(() => {
+                this.$router.push({ name: "home" });
+            }).catch((e) =>{
+              this.$store.commit("error/setErrorMsg", e.message)
+            });
+        },
     },
-  },
-  computed: {
-    ...mapState(["user"]),
-  },
+
+    computed: {
+        ...mapState(["user"]),
+    },
+    components: { ErrorMsg }
 };
 </script>

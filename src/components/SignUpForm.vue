@@ -32,6 +32,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
+        <ErrorMsg class="mx-auto mb-5 mt-5" />
         <v-btn color="primary" elevation="2" class="mx-auto mb-5 mt-5" @click="signup">アカウントを作成</v-btn>
       </v-container>
     </v-card>
@@ -40,6 +41,7 @@
 
 <script>
 import { mapState } from "vuex";
+import ErrorMsg from "./ErrorMsg.vue";
 export default {
   name: "SignUpForm",
   data: () => ({
@@ -57,7 +59,15 @@ export default {
       this.checkpassword();
       // TODO: バリデーションかける
       if (this.matchpassword) {
-        this.$store.dispatch("user/signUp", { email: this.email, password: this.password });
+        this.$store
+          .dispatch("user/signUp", { email: this.email, password: this.password })
+          .then(() => {
+            this.$store.commit("error/delErrorMsg");
+            this.$router.push({ name: "home" });
+          })
+          .catch((e) => {
+            this.$store.commit("error/setErrorMsg", e.message);
+          });
       }
     },
     checkpassword() {
@@ -71,5 +81,6 @@ export default {
   computed: {
     ...mapState(["user"]),
   },
+  components: { ErrorMsg },
 };
 </script>
