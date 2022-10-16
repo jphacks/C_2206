@@ -1,55 +1,63 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useUser } from "@/firebase";
+import { getAuth } from "firebase/auth";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const state = () => ({
-  user: getLoginedUser(), // TODO: 初期値nullの方がいいかもしれない
+  user: getAuth().currentUser, // TODO: 初期値nullの方がいいかもしれない
 });
 
 const getters = {
   getUser({ state }) {
-    state.user = getAuth().currentUser;
+    return state.user
   },
 };
 const actions = {
-  signIn({ commit }, p) {
+  reloadUser({commit}){
+    useUser((user)=>{
+      commit("setUser", user)
+    })
+  },
+  signIn({ commit, dispatch }, p) {
     createUserWithEmailAndPassword(getAuth(), p.email, p.password)
       .then((userCredential) => {
         commit("setUser", userCredential.user);
+        dispatch("firebase/reloadUserInfo", null, { root: true }).catch((error) => {
+          commit("error/addErrorMsg", error.message, { root: true });
+          console.log(error.code + error.message);
+          return error;
+        });
       })
       .catch((error) => {
-        console.log("error occured");
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        commit("error/addErrorMsg", errorMessage, { root: true });
-        console.log(errorCode + errorMessage);
-        return errorCode, errorMessage;
+        commit("error/addErrorMsg", error.message, { root: true });
+        console.log(error.code + error.message);
+        return error;
       });
   },
-  login({ commit }, p) {
+  login({ commit, dispatch }, p) {
     signInWithEmailAndPassword(getAuth(), p.email, p.password)
       .then((userCredential) => {
         commit("setUser", userCredential.user);
+        dispatch("firebase/reloadUserInfo", null, { root: true }).catch((error) => {
+          commit("error/addErrorMsg", error.message, { root: true });
+          console.log(error.code + error.message);
+          return error;
+        });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        commit("error/addErrorMsg", errorMessage, { root: true });
-        console.log(errorCode + errorMessage);
-        return errorCode, errorMessage;
+        commit("error/addErrorMsg", error.message, { root: true });
+        console.log(error.code + error.message);
+        return error;
       });
   },
   signOut({ commit }) {
     signOut(getAuth())
       .then(() => {
-        console.log("sign out ");
         commit("setUser", null);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        commit("error/addErrorMsg", errorMessage, { root: true });
-        console.log(errorCode + errorMessage);
-        return errorCode, errorMessage;
+        commit("error/addErrorMsg", error.message, { root: true });
+        console.log(error.code + error.message);
+        return error;
       });
   },
 };
@@ -59,16 +67,6 @@ const mutations = {
   },
 };
 
-const getLoginedUser = () => {
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      return user;
-    } else {
-      return null;
-    }
-  });
-};
 export default {
   namespaced: true,
   state,
