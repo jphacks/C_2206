@@ -1,36 +1,61 @@
 <template>
   <v-form>
-    <v-container>
-      <h2>login</h2>
-      <v-row>
-        <v-col cols="12" md="4">
-          <v-text-field v-model="email" label="email"></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field v-model="password" label="password" type="password"></v-text-field>
-        </v-col>
+    <v-container fluid fill-height>
+      <p class="text-h2 mx-auto mt-5">PlanPlant</p>
+      <v-row class="mx-14 mt-11" align-content="center">
+        <v-text-field prepend-icon="mdi-account-circle" label="メールアドレス" v-model="email" />
+      </v-row>
+      <v-row class="mx-14 mt-2" align-content="center">
+        <v-text-field
+          v-bind:type="showPassword ? 'text' : 'password'"
+          prepend-icon="mdi-lock"
+          v-bind:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          label="パスワード"
+          @click:append="showPassword = !showPassword"
+          v-model="password"
+        />
+      </v-row>
+      <v-row class="mx-10" align-content="center">
+        <v-btn class="info px-16 py-6 text-body-1 mx-auto" @click="login">ログイン</v-btn>
+      </v-row>
+      <v-row class="mx-10" align-content="center">
+        <ErrorMsg />
+      </v-row>
+      <v-row align-content="center">
+        <router-link to="signup" class="mx-auto mt-10">アカウントを作成</router-link>
       </v-row>
     </v-container>
-    <v-btn color="primary" elevation="2" @click="login">login</v-btn>
   </v-form>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import ErrorMsg from "./ErrorMsg.vue";
 export default {
   name: "LoginForm",
   data: () => ({
+    showPassword: false,
     email: "",
     password: "",
     uid: "",
   }),
   methods: {
     login() {
-      this.$store.dispatch("user/login", { email: this.email, password: this.password });
+      this.$store
+        .dispatch("user/login", { email: this.email, password: this.password })
+        .then(() => {
+          this.$store.commit("error/delErrorMsg");
+          this.$router.push({ name: "home" });
+        })
+        .catch((e) => {
+          this.$store.commit("error/setErrorMsg", e.message);
+        });
     },
   },
+
   computed: {
     ...mapState(["user"]),
   },
+  components: { ErrorMsg },
 };
 </script>
