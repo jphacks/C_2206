@@ -17,49 +17,31 @@ const actions = {
       commit("setUser", user);
     });
   },
-  signUp({ commit, dispatch }, p) {
-    createUserWithEmailAndPassword(getAuth(), p.email, p.password)
-      .then((userCredential) => {
-        commit("setUser", userCredential.user);
-        dispatch("firebase/reloadUserInfo", null, { root: true }).catch((error) => {
-          commit("error/addErrorMsg", error.message, { root: true });
-          console.log(error.code + error.message);
-          return error;
-        });
-      })
-      .catch((error) => {
+  async signUp({ commit, dispatch }, p) {
+    await createUserWithEmailAndPassword(getAuth(), p.email, p.password).then((userCredential) => {
+      commit("setUser", userCredential.user);
+      dispatch("firebase/reloadUserInfo", null, { root: true }).catch((error) => {
         commit("error/addErrorMsg", error.message, { root: true });
         console.log(error.code + error.message);
         return error;
       });
+    });
   },
 
-  login({ commit, dispatch }, p) {
-    signInWithEmailAndPassword(getAuth(), p.email, p.password)
-      .then((userCredential) => {
-        commit("setUser", userCredential.user);
-        dispatch("firebase/reloadUserInfo", null, { root: true }).catch((error) => {
-          commit("error/addErrorMsg", error.message, { root: true });
-          console.log(error.code + error.message);
-          return error;
-        });
-      })
-      .catch((error) => {
+  async login({ commit, dispatch }, p) {
+    await signInWithEmailAndPassword(getAuth(), p.email, p.password).then((userCredential) => {
+      commit("setUser", userCredential.user);
+      dispatch("firebase/reloadUserInfo", null, { root: true }).catch((error) => {
         commit("error/addErrorMsg", error.message, { root: true });
         console.log(error.code + error.message);
         return error;
       });
+    });
   },
-  signOut({ commit }) {
-    signOut(getAuth())
-      .then(() => {
-        commit("setUser", null);
-      })
-      .catch((error) => {
-        commit("error/addErrorMsg", error.message, { root: true });
-        console.log(error.code + error.message);
-        return error;
-      });
+  async signOut({ commit }) {
+    signOut(getAuth()).then(() => {
+      commit("setUser", null);
+    });
   },
 };
 const mutations = {
