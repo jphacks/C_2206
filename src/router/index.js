@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import TopView from "../views/TopView.vue";
 
 import HomeView from "@/views/HomeView";
 import AboutView from "@/views/AboutView";
@@ -15,8 +16,12 @@ const routes = [
   {
     path: "/about",
     name: "about",
-
     component: AboutView,
+  },
+  {
+    path: "/",
+    name: "top",
+    component: TopView,
   },
 ];
 
