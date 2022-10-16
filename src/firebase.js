@@ -1,6 +1,7 @@
 // Your web app's Firebase configuration
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -13,3 +14,12 @@ export const firebaseConfig = {
 };
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+
+export const useUser = (callback) => {
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      callback(user);
+    }
+  });
+};

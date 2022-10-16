@@ -1,11 +1,9 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, setDoc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
-import { db, app } from "@/firebase";
-
+import { db, app, useUser } from "@/firebase";
 const state = () => ({
   app: app,
-  userInfo: initUserInfo(),
+  userInfo: null,
 });
 
 const getters = {
@@ -15,31 +13,40 @@ const getters = {
 };
 const actions = {
   // ユーザーの情報をfirebaseから再読み込みする
-  reloadUserInfo({ commit }) {
-    commit("setUserInfo", initUserInfo());
+  async reloadUserInfo({ commit }) {
+    useUser((user) => {
+      syncUserInfo(user).then((userinfo) => {
+        commit("setUserInfo", userinfo);
+      });
+    });
   },
   // 最終目標を追加する
-  addGoal({ commit, state }, goal) {
-    console.log("addGoal");
-    const userInfo = state.userInfo;
-    if (!userInfo) {
-      throw new Error("state.userInfo is " + typeof userInfo);
-    }
-    console.log("addGoal2");
-    const goalRef = doc(db, "users", state.userInfo.uid);
-    updateDoc(goalRef, {
-      goal: arrayUnion({ ...goal }),
-    })
-      .then(async () => {
-        console.log("addGoal3");
-        const userInfo = await getDoc(doc(db, "users", state.userInfo.uid));
-        commit("setUserInfo", userInfo);
-      })
-      .error((error) => {
-        commit("error/addErrorMsg", error.message, { root: true });
-        console.log(error.code + error.message);
-        return error;
+  async addGoal({ commit }, goal) {
+    useUser(async (user) => {
+      const userDoc = doc(db, "users", user.uid);
+      await updateDoc(userDoc, {
+        goal: arrayUnion({ ...goal }),
       });
+      await getDoc(userDoc).then((userInfo) => {
+        commit("setUserInfo", userInfo.data());
+      });
+    });
+  },
+  // ある最終目標を削除する
+  async removeGoal({ commit }, removeId) {
+    useUser(async (user) => {
+      const userDoc = doc(db, "users", user.uid);
+      let userInfo = await (await getDoc(userDoc)).data();
+      if (userInfo.goal) {
+        const goals = userInfo.goal.filter((goal) => (goal.id != removeId));
+        await updateDoc(userDoc, {
+          goal: [...goals],
+        });
+      }
+      await getDoc(userDoc).then((userInfo) => {
+        commit("setUserInfo", userInfo.data());
+      });
+    });
   },
 };
 const mutations = {
@@ -50,29 +57,23 @@ const mutations = {
 };
 
 // functions
-const initUserInfo = () => {
-  const auth = getAuth();
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const docSnap = await getDoc(doc(db, "users", user.uid));
-      if (docSnap.exists()) {
-        return docSnap.data();
-      } else {
-        await setDoc(doc(db, "users", user.uid), {
-          userName: user.displayName,
-          goal: [],
-          records: [],
-          recordSummary: {
-            achevement: 0,
-          },
-        });
-        const docSnap = await getDoc(doc(db, "users", user.uid));
-        return docSnap.data();
-      }
-    } else {
-      return null;
-    }
-  });
+const syncUserInfo = async (user) => {
+  if (!user) return null;
+  const docSnap = await getDoc(doc(db, "users", user.uid));
+  if (docSnap.exists()) {
+    return docSnap.data();
+  } else {
+    await setDoc(doc(db, "users", user.uid), {
+      userName: user.displayName,
+      goal: [],
+      records: [],
+      recordSummary: {
+        achevement: 0,
+      },
+    });
+    const docSnap = await getDoc(doc(db, "users", user.uid));
+    return docSnap.data();
+  }
 };
 
 export default {
