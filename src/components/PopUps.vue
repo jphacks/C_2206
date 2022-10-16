@@ -13,55 +13,66 @@
         <v-card-text>
           <v-container>
             <v-row>
+              <!-- 「なにを」 -->
               <v-col cols="12" sm="6" class="pt-7 pl-14">
                 <p class="text-h5">なにを</p>
               </v-col>
-              <v-col cols="12" sm="6">
 
-                <!-- 「なにを」 -->
+              <v-col cols="12" sm="6">
                 <v-select :items="['べんきょう', 'うんどう', 'おてつだい', 'どくしょ']" filled label="かならずえらんでね" dense required
                   v-model="what"></v-select>
               </v-col>
 
-              <!-- 「べんきょう」, 「うんどう」-->
-              <v-col cols="12" sm="6" class="pt-7 pl-14">
-                <div v-if="howMuchTime">
-                  <p class="text-h5">いくら（じかん）</p>
-                </div>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <div v-if="howMuchTime">
-                  <vue-timepicker v-model="howMuch"></vue-timepicker>
+
+              <!-- 「いくら」 -->
+
+              <v-col cols="12" sm="6" class=" pl-14">
+                <div v-if="inits">
+                  <p class="text-h5">いくら</p>
                 </div>
               </v-col>
 
-              <!-- 「おてつだい」 -->
-              <v-col cols="12" sm="6" class="pt-7 pl-14">
-                <div v-if="howManyTimes">
-                  <p class="text-h5">いくら（なんかい）</p>
+              <v-col cols="12" sm="6">
+                <div v-if="inits">
+                  <v-select :items="['かい','さつ','じかん','こ']" filled label="かならずえらんでね" dense required v-model="init">
+                  </v-select>
                 </div>
               </v-col>
-              <v-col cols="12" sm="6">
+
+
+              <!-- 「かい」 -->
+              <v-col cols="12" sm="12">
                 <div v-if="howManyTimes">
                   <v-text-field v-model.number="howMuch" filled suffix="かい" label="すうじをいれてね（半角）" dense required />
                 </div>
               </v-col>
 
-              <!-- 「どくしょ」 -->
-              <v-col cols="12" sm="6" class="pt-7 pl-14">
-                <div v-if="howManyBooks">
-                  <p class="text-h5">いくら（なんさつ）</p>
-                </div>
-              </v-col>
-              <v-col cols="12" sm="6">
+
+              <!-- 「さつ」 -->
+              <v-col cols="12" sm="12">
                 <div v-if="howManyBooks">
                   <v-text-field v-model.number="howMuch" filled suffix="さつ" label="すうじをいれてね（半角）" dense required />
                 </div>
               </v-col>
 
+              <!-- 「じかん」-->
+              <v-col cols="12" sm="12">
+                <div v-if="howMuchTime">
+                  <vue-timepicker v-model="howMuch"></vue-timepicker>
+                </div>
+              </v-col>
+
+              <!-- 「こ」 -->
+              <v-col cols="12" sm="12">
+                <div v-if="howManyThings">
+                  <v-text-field v-model.number="howMuch" filled suffix="こ" label="すうじをいれてね（半角）" dense required />
+                </div>
+              </v-col>
+
+
               <!-- 「カレンダー」 -->
 
-              <v-col cols="12" sm="12" class="pt-4 pl-10">
+              <v-col cols="12" sm="12" class=" pl-10">
                 <div v-if="tillWhenToWhen">
                   <p class="text-h6">いつから・いつまで</p>
                 </div>
@@ -124,14 +135,14 @@ export default {
   name: "LoginForm",
   data: () => (
     {
-
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       dateFormatted: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       menu1: false,
       menu2: false,
       howMuch: undefined,
+      init: '',
       uid: "",
-      what: '',
+      what: undefined,
     }),
 
   methods: {
@@ -152,7 +163,9 @@ export default {
     openPopUp() {
       this.howMuchTime = false,
       this.howManyBooks = false,
-      this.tillWhenToWhen = false
+      this.howMuchTimes = false,
+      this.tillWhenToWhen = false,
+      this.init = false
     }
   },
   computed: {
@@ -162,16 +175,21 @@ export default {
       return this.formatDate(this.date)
     },
 
-
     //表示・非表示
+    inits() {
+      return this.what != undefined
+    },
     howMuchTime() {
-      return this.what === 'べんきょう' || this.what === 'うんどう' 
+      return this.init === 'じかん'
     },
     howManyTimes() {
-      return this.what === 'おてつだい'
+      return this.init === 'かい'
     },
     howManyBooks() {
-      return this.what === 'どくしょ'
+      return this.init === 'さつ'
+    },
+    howManyThings() {
+      return this.init === 'こ'
     },
     tillWhenToWhen() {
       return this.howMuch != undefined
