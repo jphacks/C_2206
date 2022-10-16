@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, signUpWithEmailAndPassword, signOut } from "firebase/auth";
 
 const state = () => ({
   user: getLoginedUser(), // TODO: 初期値nullの方がいいかもしれない
@@ -11,7 +11,7 @@ const getters = {
   },
 };
 const actions = {
-  signIn({ commit }, p) {
+  signUp({ commit }, p) {
     createUserWithEmailAndPassword(getAuth(), p.email, p.password)
       .then((userCredential) => {
         commit("setUser", userCredential.user);
@@ -26,7 +26,7 @@ const actions = {
       });
   },
   login({ commit }, p) {
-    signInWithEmailAndPassword(getAuth(), p.email, p.password)
+    signUpWithEmailAndPassword(getAuth(), p.email, p.password)
       .then((userCredential) => {
         commit("setUser", userCredential.user);
       })
