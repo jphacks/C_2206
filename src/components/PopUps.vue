@@ -5,9 +5,9 @@
         <v-btn color="primary" dark v-bind="attrs" v-on="on"> たねをまく </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          <span class="text-h5">どのようにがんばろう？</span>
-        </v-card-title>
+        <v-toolbar color="#009A5B" dark class="mx-auto text-h5">
+          どのようにがんばろう？
+        </v-toolbar>
         <v-card-text>
           <v-container>
             <v-row>
@@ -19,6 +19,19 @@
               <v-col cols="12" sm="6">
                 <v-select :items="['べんきょう', 'うんどう', 'おてつだい', 'どくしょ']" filled label="かならずえらんでね" dense required
                   v-model="what"></v-select>
+              </v-col>
+
+              <!-- 「なにを」 -->
+              <v-col cols="12" sm="6" class="pt-7 pl-14">
+                <div v-if="inits">
+                  <p class="text-h7">がんばることをくわしくかこう</p>
+                </div>
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <div v-if="inits">
+                  <v-text-field v-model="name" filled label="できるならかいてね" dense required />
+                </div>
               </v-col>
 
               <!-- 「いくら」 -->
@@ -106,8 +119,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDialog"> Close </v-btn>
-          <v-btn color="blue darken-1" text @click="makeGoal"> Save </v-btn>
+          <v-btn color="blue darken-1" text @click="closeDialog"> やめる </v-btn>
+          <v-btn x-large color="#C75959" dark @click="makeGoal"> OK！ </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -132,6 +145,7 @@ export default {
     init: "",
     uid: "",
     what: undefined,
+    name: undefined,
     dialog: false,
   }),
 
@@ -153,7 +167,16 @@ export default {
     makeGoal() {
       let value = undefined
       let type = undefined
-      const dayGoalDefine = () => {
+      let sub_title = undefined
+      const Sub_titleDefine = () => {
+        if (this.name != undefined) {
+          sub_title = this.name
+        }
+        else {
+          sub_title = this.what
+        }
+      }
+      const DayGoalDefine = () => {
         if (this.howMuch != undefined) {
           type = "count"
           value = this.howMuch
@@ -163,10 +186,12 @@ export default {
           value = this.howLong
         }
       }
-      dayGoalDefine();
+      Sub_titleDefine();
+      DayGoalDefine();
       const data = {
         id: uuid(),
         title: this.what,
+        sub_titile: sub_title,
         startDate: this.date,
         endDate: this.date,
         dayGoal: {
