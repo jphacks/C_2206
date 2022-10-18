@@ -151,8 +151,8 @@ export default {
       this.dialog = false;
     },
     makeGoal() {
-      const value = undefined
-      const type = undefined
+      let value = undefined
+      let type = undefined
       const dayGoalDefine = () => {
         if (this.howMuch != undefined) {
           type = "count"
