@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <p>this is home</p>
+    <v-container>
+      <PopUps />
+    </v-container>
     <v-btn @click="reloadUserInfo">reload</v-btn>
     <v-btn @click="signOut">sign out</v-btn>
     <v-btn @click="addgoal">add goal</v-btn>
@@ -31,9 +33,13 @@
 import { v4 as uuid } from "uuid";
 import { mapState } from "vuex";
 import { Timestamp } from "firebase/firestore";
+import PopUps from "@/components/PopUps.vue";
 export default {
+  data() {},
   name: "HomeView",
-  components: {},
+  components: {
+    PopUps,
+  },
   methods: {
     signOut() {
       this.$store.dispatch("user/signOut").then(() => {
