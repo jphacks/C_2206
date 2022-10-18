@@ -21,10 +21,10 @@
                   v-model="what"></v-select>
               </v-col>
 
-              <!-- 「なにを」 -->
-              <v-col cols="12" sm="6" class="pt-7 pl-14">
+              <!-- 「くわしくかこう」 -->
+              <v-col cols="12" sm="6" class="pt-4 pl-14">
                 <div v-if="inits">
-                  <p class="text-h7">がんばることをくわしくかこう</p>
+                  <p class="text-h7">がんばることをくわしくかこう<br>(さらあらい、ジョギングなど)</p>
                 </div>
               </v-col>
 
@@ -34,11 +34,11 @@
                 </div>
               </v-col>
 
-              <!-- 「いくら」 -->
+              <!-- 「どのぐらい」 -->
 
               <v-col cols="12" sm="6" class="pl-14">
                 <div v-if="inits">
-                  <p class="text-h5">いくら</p>
+                  <p class="text-h5">どのぐらい</p>
                 </div>
               </v-col>
 
@@ -81,7 +81,7 @@
 
               <v-col cols="12" sm="12" class="pl-10">
                 <div v-if="tillWhenToWhen">
-                  <p class="text-h6">いつから・いつまで</p>
+                  <p class="text-h6">いつから・いつまでに</p>
                 </div>
               </v-col>
               <v-col cols="12">
