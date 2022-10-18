@@ -10,9 +10,7 @@
 import PopUps from "@/components/PopUps.vue";
 export default {
   data() {
-    return {
-      dialog: false,
-    }
+    
   },
 
   name: "HomeView",
