@@ -35,7 +35,6 @@ import { mapState } from "vuex";
 import { Timestamp } from "firebase/firestore";
 import PopUps from "@/components/PopUps.vue";
 export default {
-  data() {},
   name: "HomeView",
   components: {
     PopUps,
@@ -52,8 +51,8 @@ export default {
         goalId: goalId,
         createdAt: Timestamp.fromDate(new Date(2022, 10, 16, 14, 0)),
         value: {
-          type: "timestamp",
-          value: Timestamp.fromDate(new Date(3 * 3600 * 1000)),
+          type: "count",
+          value: 10,
         },
       });
     },
@@ -65,8 +64,8 @@ export default {
         startDate: Timestamp.fromDate(new Date(2022, 10 - 1, 16)),
         endDate: Timestamp.fromDate(new Date(2022, 10 - 1, 30)),
         dayGoal: {
-          type: "timestamp",
-          value: new Date(3 * 3600 * 1000),
+          type: "count",
+          value: 1,
         },
       });
     },
