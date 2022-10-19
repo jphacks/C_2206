@@ -141,12 +141,12 @@ const calcRecordSum = (originalRecords, goal) => {
    * 目標を開始してから今日までの期間(単位：日)
    * @type(number)
    */
-  const daysUntilToday = Math.floor((Date.now() - (goal.startDate.toMillis()))/1000/3600/24);
+  const daysUntilToday = Math.floor((Date.now() - goal.startDate.toMillis()) / 1000 / 3600 / 24);
   /**
    * 目標に設定した継続期間(単位：日)
    * @type(number)
    */
-  const period = Math.floor((goal.endDate.toDate().getTime() - goal.startDate.toDate().getTime())/1000/3600/24);
+  const period = Math.floor((goal.endDate.toDate().getTime() - goal.startDate.toDate().getTime()) / 1000 / 3600 / 24);
   if (type == "timestamp") {
     /**
      *記録の合計の目標です(単位：ミリ秒)
@@ -157,12 +157,14 @@ const calcRecordSum = (originalRecords, goal) => {
      * 今までの記録の合計です(ミリ秒)
      *@type (number)
      */
-    const sum = records.reduce((sum, r) => {
-      if (r.value.type == "timestamp") {
-        const time = r.value.value.toDate();
-        return new Date(sum.getTime() + time.getTime());
-      }
-    }, new Date(0)).getTime();
+    const sum = records
+      .reduce((sum, r) => {
+        if (r.value.type == "timestamp") {
+          const time = r.value.value.toDate();
+          return new Date(sum.getTime() + time.getTime());
+        }
+      }, new Date(0))
+      .getTime();
     /**
      * 現時点での目標の達成度です。単位はパーセント。別名しなしな度
      * （合計/日数）＊今日までの日数 と今日までの記録の合計の比で算出する
@@ -175,9 +177,12 @@ const calcRecordSum = (originalRecords, goal) => {
     const achevement = calcAchevement();
     return { sum, achevement };
   } else if (type == "count" || type == "bool") {
-    const goalRecordSum = period * goal.dayGoal.value.toDate();
+    if (goal.dayGoal.value.type == "timestamp") {
+      throw "Invalid record type";
+    }
+    const goalRecordSum = period * goal.dayGoal.value;
     const sum = records.reduce((sum, r) => {
-      return sum + r;
+      return sum + r.value.value;
     }, 0);
     const achevement = Math.floor((sum / ((goalRecordSum / period) * daysUntilToday)) * 100);
     return { sum, achevement };

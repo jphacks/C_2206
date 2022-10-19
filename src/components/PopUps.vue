@@ -132,6 +132,7 @@ import { mapState } from "vuex";
 import VueTimepicker from "vue2-timepicker";
 import "vue2-timepicker/dist/VueTimepicker.css";
 import { v4 as uuid } from "uuid";
+import { Timestamp } from 'firebase/firestore'
 
 export default {
   name: "LoginForm",
@@ -183,7 +184,7 @@ export default {
         }
         else if (this.howLong != undefined) {
           type = "timestamp"
-          value = this.howLong
+          value = Timestamp.fromDate(this.howLong)
         }
       }
       Sub_titleDefine();
@@ -191,9 +192,10 @@ export default {
       const data = {
         id: uuid(),
         title: this.what,
-        sub_titile: sub_title,
-        startDate: this.date,
-        endDate: this.date,
+        sub_title: sub_title,
+        createdAt: Timestamp.now(),
+        startDate: Timestamp.fromDate(new Date(this.date)),
+        endDate: Timestamp.fromDate(new Date(this.date2)),
         dayGoal: {
           type: type,
           value: value
@@ -201,7 +203,7 @@ export default {
       }
       this.$store.dispatch("firebase/addGoal", data)
       this.dialog = false;
-    }
+    },
   },
   computed: {
     ...mapState(["user"]),
