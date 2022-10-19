@@ -16,7 +16,7 @@
         />
       </v-row>
       <v-row class="mx-10" align-content="center">
-        <v-btn class="info px-16 py-6 text-body-1 mx-auto" @click="login">ログイン</v-btn>
+        <v-btn class="px-16 py-6 text-body-1 mx-auto" color="primary" @click="login">ログイン</v-btn>
       </v-row>
       <v-row class="mx-10" align-content="center">
         <ErrorMsg />

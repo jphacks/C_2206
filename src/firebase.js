@@ -15,11 +15,16 @@ export const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-export const useUser = (callback) => {
+export const useUser = (callback, failed=()=>{}) => {
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
     if (user) {
       callback(user);
+    }else{
+      if(failed){
+        failed()
+      }
+      throw("No user is signed in.")
     }
   });
 };
