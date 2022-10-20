@@ -1,9 +1,9 @@
 <template>
-  <v-row class="mt-3" justify="center">
+  <v-row class="mt-n14">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-img v-bind="attrs" v-on="on" src="@/assets/sun.png" max-height="200" max-width="200" style="align-items: center">
-          <p style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">もくひょう<br />せってい</p>
+        <v-img class="ml-n3" v-bind="attrs" v-on="on" src="@/assets/sun.png" max-height="200" max-width="200" style="align-items: center">
+          <p class="grey--text text--darken1 " style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">もくひょう<br />せってい</p>
         </v-img>
       </template>
       <v-card>
