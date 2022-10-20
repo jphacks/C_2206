@@ -7,8 +7,15 @@ const state = () => ({
 });
 
 const getters = {
-  getUserInfo(state) {
+  getUserInfo: (state) => {
     return state.userInfo;
+  },
+  getGoals: (state) => {
+    if (state.userInfo) {
+      if (state.userInfo.goals && typeof state.userInfo.goals == "object") {
+        return state.userInfo.goals;
+      } else return state.userInfo.goals;
+    } else return undefined;
   },
 };
 const actions = {
@@ -31,6 +38,7 @@ const actions = {
         commit("setUserInfo", userInfo.data());
       });
     });
+    commit("user/setCurrentGoalId", goal.id, { root: true });
   },
   // ある最終目標を削除する
   async removeGoal({ commit }, removeId) {
