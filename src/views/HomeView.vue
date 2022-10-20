@@ -1,14 +1,23 @@
 <template>
   <div class="home">
-
     <div v-if="!loading">
-      <v-container>
+      <v-container class="home-content">
+        <!--ホーム画面のレイアウト-->
+        <v-row justify="end">
+          <v-btn text class="white--text" style="text-transform: none" @click="signout">log out</v-btn>
+        </v-row>
         <PopUps />
-            <HomeScreen />
+        <v-row style="height: 40px"></v-row>
+        <v-row justify="center" align-content="center" class="grey lighten-1 white--text mt-16 mx-16" style="height: 70px">
+          <!--PopUp.vueで設定した期間から残りの時間を導いてuntilgoalに代入-->
+          <div>しゅうかくまであと{{ untilgoal }}にち</div>
+        </v-row>
+        <v-row style="height: 150px"></v-row>
+        <v-row class="brown lighten-1 white--text mt-16" style="height: 270px"> </v-row>
       </v-container>
-      <v-container>
-        <PlantPlanter :goalTitle="goalTitle" />
-      </v-container>
+      <PlantPlanter :goalTitle="goalTitle" />
+
+      <!-- 以下デバッグよう-->
       <v-btn @click="reloadUserInfo">reload</v-btn>
       <v-btn @click="signOut">sign out</v-btn>
       <v-btn @click="addgoal">add goal</v-btn>
@@ -29,7 +38,6 @@
               <p>{{ record.createdAt.toDate() }}</p>
               <v-btn @click="removerecord(record.id)">remove</v-btn>
             </div>
-
           </div>
         </div>
       </div>
@@ -42,14 +50,12 @@
 import { v4 as uuid } from "uuid";
 import { mapState } from "vuex";
 import { Timestamp } from "firebase/firestore";
-import HomeScreen from "@/components/HomeScreen.vue";
 import PopUps from "@/components/PopUps.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 export default {
   name: "HomeView",
   components: {
     PopUps,
-    HomeScreen,
     PlantPlanter,
   },
   data: () => {
@@ -126,3 +132,45 @@ export default {
   },
 };
 </script>
+
+<style>
+.home-content {
+  background-color: rgb(202, 225, 234);
+  width: 100%;
+  height: 100vh;
+}
+
+.close {
+  margin-right: -15px;
+}
+
+.cursive {
+  font-family: cursive;
+}
+
+.soil {
+  background: rgb(166, 137, 113);
+  height: 200px;
+  width: 200px;
+}
+
+.ellipse {
+  width: 200px;
+  height: 100px;
+  background: rgb(255, 255, 255);
+  margin-top: 100px;
+  margin-left: 110px;
+  margin-right: 110px;
+  -moz-border-radius: 100px / 50px;
+  -webkit-border-radius: 100px / 50px;
+  border-radius: 100px / 50px;
+}
+
+.watering {
+  margin-left: 50px;
+  margin-top: 25px;
+  color: black;
+  font-size: xx-large;
+  font-weight: bold;
+}
+</style>
