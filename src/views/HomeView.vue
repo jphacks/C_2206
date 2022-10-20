@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <HomeScreen />
     <v-container>
       <PopUps />
     </v-container>
@@ -33,11 +34,13 @@
 import { v4 as uuid } from "uuid";
 import { mapState } from "vuex";
 import { Timestamp } from "firebase/firestore";
+import HomeScreen from "@/components/HomeScreen.vue";
 import PopUps from "@/components/PopUps.vue";
 export default {
   name: "HomeView",
   components: {
     PopUps,
+    HomeScreen,
   },
   methods: {
     signOut() {
