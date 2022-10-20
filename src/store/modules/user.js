@@ -4,12 +4,15 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } f
 
 const state = () => ({
   user: getAuth().currentUser, // TODO: 初期値nullの方がいいかもしれない
-  currentGoalId: ""
+  currentGoalId: "",
 });
 
 const getters = {
-  getUser({ state }) {
+  getUser: ({ state })=> {
     return state.user;
+  },
+  getCurrentGoalId: (state) => {
+    return state.currentGoalId;
   },
 };
 const actions = {
@@ -49,9 +52,9 @@ const mutations = {
   setUser(state, user) {
     state.user = user;
   },
-  setCurrentGoal(state, goalId){
-    state.currentGoalId = goalId
-  }
+  setCurrentGoalId(state, goalId) {
+    state.currentGoalId = goalId;
+  },
 };
 
 export default {
