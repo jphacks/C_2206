@@ -1,26 +1,18 @@
+<template>
+  <v-card v-if="errorMessage" class="mx-auto my-4" color="red lighten-3">
+    <v-card-title>Error</v-card-title>
+    <v-card-text>
+      <p>{{ errorMessage }}</p>
+    </v-card-text>
+  </v-card>
+</template>
+
 <script>
+import { mapState } from "vuex";
 export default {
   name: "ErrorMsg",
-  computed: {
-    message: function () {
-      if (this.$store.state.error.errorMsg.length > 0) {
-        return this.$store.state.error.errorMsg;
-      } else {
-        return "no message";
-      }
-    },
-  },
+  computed: mapState({
+    errorMessage: (state) => state.error.errorMessage,
+  }),
 };
 </script>
-
-<template>
-  <!-- <v-card color="red-lighten-3">
-    <v-card-text>
-      <div>Error</div>
-      <p>{{ message }}</p>
-    </v-card-text>
-  </v-card> -->
-  <div>
-    error: {{ message }}
-  </div>
-</template>
