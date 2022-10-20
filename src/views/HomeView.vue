@@ -7,6 +7,7 @@
           <v-btn text class="white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
         <PopUps />
+        <GoalList />
         <ReportGoal />
         <v-row style="height: 40px"></v-row>
         <v-row justify="center" align-content="center" class="grey lighten-1 white--text mt-16 mx-16" style="height: 70px">
@@ -52,14 +53,17 @@ import { v4 as uuid } from "uuid";
 import { mapState } from "vuex";
 import { Timestamp } from "firebase/firestore";
 import PopUps from "@/components/PopUps.vue";
+import GoalList from "@/components/GoalList.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
+
 export default {
   name: "HomeView",
   components: {
     PopUps,
     PlantPlanter,
-    ReportGoal
+    ReportGoal,
+    GoalList
 },
   data: () => {
     return {
