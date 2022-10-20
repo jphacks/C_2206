@@ -74,6 +74,7 @@ export default {
     },
     untilgoal() {
       const days = this.$store.getters["firebase/getUntilDays"](this.currentGoalId)
+      if(!days) return undefined
       const untilgoal = Math.floor(days.getTime() / 3600 / 1000/ 24)
       return untilgoal
     }
