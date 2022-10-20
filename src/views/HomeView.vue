@@ -1,8 +1,10 @@
 <template>
   <div class="home">
+
     <div v-if="!loading">
       <v-container>
         <PopUps />
+            <HomeScreen />
       </v-container>
       <v-container>
         <PlantPlanter :goalTitle="goalTitle" />
@@ -27,6 +29,7 @@
               <p>{{ record.createdAt.toDate() }}</p>
               <v-btn @click="removerecord(record.id)">remove</v-btn>
             </div>
+
           </div>
         </div>
       </div>
@@ -39,12 +42,14 @@
 import { v4 as uuid } from "uuid";
 import { mapState } from "vuex";
 import { Timestamp } from "firebase/firestore";
+import HomeScreen from "@/components/HomeScreen.vue";
 import PopUps from "@/components/PopUps.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 export default {
   name: "HomeView",
   components: {
     PopUps,
+    HomeScreen,
     PlantPlanter,
   },
   data: () => {

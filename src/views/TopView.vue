@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="top">
     <LoginForm />
   </div>
 </template>
@@ -11,8 +11,6 @@ export default {
   components: {
     LoginForm,
   },
-  methods: {
-
-  },
+  methods: {},
 };
 </script>
