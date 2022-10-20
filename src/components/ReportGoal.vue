@@ -16,9 +16,7 @@
         </v-container>
 
         <v-col cols="12" sm="6">
-          <p class="brown--text text--darken-4 text-h6 pl-16">じかん？かいすう？</p>
           <v-col>
-            <v-select :items="['時間', '回数']" filled label="かならずえらんでね" dense required v-model="LongOrMany"> </v-select>
             <!--時間を選んだ場合-->
             <div v-if="HowLong">
               <p class="brown--text text--darken-4 text-h6 pl-13">どのくらいやった？</p>
@@ -52,13 +50,16 @@
                 </v-row>
               </v-col>
             </div>
-            <v-row v-if="saveError">
+            <div v-if="!HowLong && !HowMany">
+              <v-col> たねをうえてね </v-col>
+            </div>
+            <v-row v-if="saveError && (HowLong || HowMany)">
               <p class="red--text pl-5">入力してください</p>
             </v-row>
           </v-col>
         </v-col>
 
-        <v-card-actions>
+        <v-card-actions v-if="HowLong || HowMany">
           <v-spacer></v-spacer>
           <v-row align-content="center" class="mb-6">
             <v-btn x-large class="cursive white--text text-h4 pr-7" color="red accent-2" @click="makeRecord">OK!</v-btn>
@@ -71,7 +72,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { serverTimestamp, Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 
 export default {
@@ -94,20 +95,20 @@ export default {
       let value = undefined;
       let type = undefined;
 
-      if (this.LongOrMany === "時間") {
+      if (this.HowLong) {
         type = "timestamp";
         value = Timestamp.fromDate(new Date((this.hours * 3600 + this.minutes * 60) * 1000));
-      } else if (this.LongOrMany === "回数") {
+      } else if (this.HowMany) {
         type = "count";
         value = this.times;
       }
 
-      if ((this.hours !== undefined && this.minutes !== undefined) || this.times !== undefined) {
+      if (value && type) {
+        const goalId = this.$store.getters["user/getCurrentGoalId"];
         const data = {
           id: uuid(),
-          //goalId: uuid,
-          createdAt: serverTimestamp(),
-          dayResult: {
+          goalId: goalId,
+          value: {
             type: type,
             value: value,
           },
@@ -123,12 +124,18 @@ export default {
 
   computed: {
     ...mapState(["user"]),
-
     HowLong() {
-      return this.LongOrMany === "時間";
+      const goal = this.$store.getters["firebase/getOneGoal"](this.currentGoalId);
+      if (goal && goal.dayGoal.type == "timestamp") return true;
+      else return false;
     },
     HowMany() {
-      return this.LongOrMany === "回数";
+      const goal = this.$store.getters["firebase/getOneGoal"](this.currentGoalId);
+      if (goal && (goal.dayGoal.type == "count" || goal.dayGoal.type == "bool")) return true;
+      else return false;
+    },
+    currentGoalId() {
+      return this.$store.getters["user/getCurrentGoalId"];
     },
   },
 };

@@ -1,4 +1,4 @@
-import { doc, setDoc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc, arrayUnion, serverTimestamp } from "firebase/firestore";
 
 import { db, app, useUser } from "@/firebase";
 const state = () => ({
@@ -12,15 +12,27 @@ const getters = {
   },
   getGoals: (state) => {
     if (state.userInfo) {
-      if (state.userInfo.goals && typeof state.userInfo.goals == "object") {
+      if (state.userInfo.goals) {
         return state.userInfo.goals;
       } else return state.userInfo.goals;
     } else return undefined;
   },
+  getOneGoal: (state) => (id) => {
+    if (state.userInfo && state.userInfo.goals) {
+      const goals = state.userInfo.goals;
+      if (id && goals.length > 0) {
+        const goal = goals.filter((goal) => goal.id == id)[0];
+        if (goal) {
+          return goal;
+        }
+      }
+    }
+    return undefined;
+  },
   getUntilDays: (state) => (id) => {
     if (state.userInfo && state.userInfo.goals) {
-      const goal = state.userInfo.goals.filter(goal=>goal.id == id)[0];
-      return new Date(goal.endDate.toDate().getTime() - Date().getTime())
+      const goal = state.userInfo.goals.filter((goal) => goal.id == id)[0];
+      return new Date(goal.endDate.toDate().getTime() - new Date().getTime());
     }
   },
 };
@@ -77,6 +89,7 @@ const actions = {
         }
         await updateDoc(userDoc, {
           records: arrayUnion({ ...record }),
+          createdAt: serverTimestamp(),
           recordSummary: userInfo.records ? updateRecordSummary(userInfo) : [],
         });
       });
