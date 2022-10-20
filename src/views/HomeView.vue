@@ -4,9 +4,10 @@
       <v-container class="home-content">
         <!--ホーム画面のレイアウト-->
         <v-row justify="end">
-          <v-btn text class="white--text" style="text-transform: none" @click="signout">log out</v-btn>
+          <v-btn text class="white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
         <PopUps />
+        <ReportGoal />
         <v-row style="height: 40px"></v-row>
         <v-row justify="center" align-content="center" class="grey lighten-1 white--text mt-16 mx-16" style="height: 70px">
           <!--PopUp.vueで設定した期間から残りの時間を導いてuntilgoalに代入-->
@@ -14,8 +15,8 @@
         </v-row>
         <v-row style="height: 150px"></v-row>
         <v-row class="brown lighten-1 white--text mt-16" style="height: 270px"> </v-row>
+        <PlantPlanter :goalTitle="goalTitle" />
       </v-container>
-      <PlantPlanter :goalTitle="goalTitle" />
 
       <!-- 以下デバッグよう-->
       <v-btn @click="reloadUserInfo">reload</v-btn>
@@ -52,12 +53,14 @@ import { mapState } from "vuex";
 import { Timestamp } from "firebase/firestore";
 import PopUps from "@/components/PopUps.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
+import ReportGoal from "@/components/ReportGoal.vue";
 export default {
   name: "HomeView",
   components: {
     PopUps,
     PlantPlanter,
-  },
+    ReportGoal
+},
   data: () => {
     return {
       loading: true,
@@ -129,6 +132,11 @@ export default {
         return "名無しの木";
       }
     },
+    // untilgoal() {
+    //   const days = this.$store.getters["firebase/getUntilDays"]
+    //   const untilgoal = (days.getTime() / 3600 / 1000/ )
+    //   return untilgoal
+    // }
   },
 };
 </script>

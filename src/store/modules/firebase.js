@@ -17,6 +17,12 @@ const getters = {
       } else return state.userInfo.goals;
     } else return undefined;
   },
+  getUntilDays: (state) => (id) => {
+    if (state.userInfo && state.userInfo.goals) {
+      const goal = state.userInfo.goals.filter(goal=>goal.id == id)[0];
+      return new Date(goal.endDate.toDate().getTime() - Date().getTime())
+    }
+  },
 };
 const actions = {
   // ユーザーの情報をfirebaseから再読み込みする
