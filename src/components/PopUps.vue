@@ -2,8 +2,11 @@
   <v-row class="mt-n14">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-img class="ml-n3" v-bind="attrs" v-on="on" src="@/assets/sun.png" max-height="200" max-width="200" style="align-items: center">
-          <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">もくひょう<br />せってい</p>
+        <v-img class="ml-n3" v-bind="attrs" v-on="on" src="@/assets/sun.png" max-height="200" max-width="200"
+          style="align-items: center">
+          <p class="grey--text text--darken1"
+            style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">
+            もくひょう<br />せってい</p>
         </v-img>
       </template>
       <v-card>
@@ -17,7 +20,8 @@
               </v-col>
 
               <v-col cols="12" sm="6">
-                <v-select :items="['べんきょう', 'うんどう', 'おてつだい', 'どくしょ']" filled label="かならずえらんでね" dense required v-model="what"></v-select>
+                <v-select :items="['べんきょう', 'うんどう', 'おてつだい', 'どくしょ']" filled label="かならずえらんでね" dense required
+                  v-model="what"></v-select>
               </v-col>
 
               <!-- 「くわしくかこう」 -->
@@ -43,7 +47,8 @@
 
               <v-col cols="12" sm="6">
                 <div v-if="inits">
-                  <v-select :items="['かい', 'さつ', 'じかん', 'こ']" filled label="かならずえらんでね" dense required v-model="init"> </v-select>
+                  <v-select :items="['かい', 'さつ', 'じかん', 'こ']" filled label="かならずえらんでね" dense required v-model="init">
+                  </v-select>
                 </div>
               </v-col>
 
@@ -88,21 +93,34 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
-                          <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
+                          <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false"
+                            transition="scale-transition" offset-y max-width="290px" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                              <v-text-field v-model="date" label="いつから" persistent-hint prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
+                              <v-text-field v-model="date" label="いつから" persistent-hint prepend-icon="mdi-calendar"
+                                v-bind="attrs" v-on="on"></v-text-field>
                             </template>
-                            <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                            <v-date-picker v-model="date" no-title @input="menu1 = false"
+                              :min="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)">
+                            </v-date-picker>
                           </v-menu>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
+                          <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false"
+                            transition="scale-transition" offset-y max-width="290px" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                              <v-text-field v-model="date2" label="いつまで" persistent-hint prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
+                              <v-text-field v-model="date2" label="いつまで" persistent-hint prepend-icon="mdi-calendar"
+                                v-bind="attrs" v-on="on"></v-text-field>
                             </template>
-                            <v-date-picker v-model="date2" no-title @input="menu2 = false"></v-date-picker>
+                            <v-date-picker v-model="date2" no-title @input="menu2 = false"
+                              :min="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)">
+                            </v-date-picker>
                           </v-menu>
                         </v-col>
+                        <v-row>
+                          <div v-if="dateIsWrong">
+                            <small>「いつまで」が「いつから」よりもむかしだよ！</small>
+                          </div>
+                        </v-row>
                       </v-row>
                     </v-container>
                   </template>
@@ -114,7 +132,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="closeDialog"> やめる </v-btn>
-          <v-btn x-large color="#C75959" dark @click="makeGoal"> OK！ </v-btn>
+          <div v-if="OKButton">
+            <v-btn x-large color="#C75959" dark @click="makeGoal"> OK！ </v-btn>
+          </div>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -131,8 +151,8 @@ import { Timestamp } from "firebase/firestore";
 export default {
   name: "PopUps",
   data: () => ({
-    date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
-    date2: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
+    date: null,
+    date2: null,
     menu1: false,
     menu2: false,
     howMuch: undefined,
@@ -142,6 +162,7 @@ export default {
     what: undefined,
     name: undefined,
     dialog: false,
+    dateError: false,
   }),
   methods: {
     //初期の表示設定
@@ -159,6 +180,15 @@ export default {
       this.dialog = false;
     },
     makeGoal() {
+      let start = new Date(this.date)
+      let end = new Date(this.date2)
+
+      if (start.getTime() > end.getTime()) {
+        this.dateError = true
+        console.log("Date Error")
+        return 1
+      }
+
       let value = undefined;
       let type = undefined;
       let sub_title = undefined;
@@ -178,6 +208,7 @@ export default {
           value = Timestamp.fromDate(new Date((this.howLong.HH * 3600 + this.howLong.mm * 60) * 1000));
         }
       };
+
       Sub_titleDefine();
       DayGoalDefine();
       const goalid = uuid();
@@ -193,6 +224,7 @@ export default {
           value: value,
         },
       };
+
       this.$store.commit("user/setCurrentGoalId", goalid);
       this.$store.dispatch("firebase/addGoal", data);
       this.dialog = false;
@@ -222,8 +254,14 @@ export default {
       return this.init === "こ";
     },
     tillWhenToWhen() {
-      return this.howMuch != undefined;
+      return this.howMuch != undefined || this.howLong != undefined;
     },
+    dateIsWrong() {
+      return this.dateError == true;
+    },
+    OKButton() {
+      return this.date != null && this.date2 != null
+    }
   },
   watch: {
     date() {
@@ -236,3 +274,9 @@ export default {
 };
 //dataプロパティが更新されたらcomputedが更新されるようにする
 </script>
+
+<style>
+small {
+  color: red;
+}
+</style>
