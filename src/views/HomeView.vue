@@ -7,6 +7,7 @@
           <v-btn text class="white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
         <PopUps />
+        <GoalList />
         <ReportGoal />
         <v-row style="height: 40px"></v-row>
         <v-row justify="center" align-content="center" class="grey lighten-1 white--text mt-16 mx-16" style="height: 70px">
@@ -25,14 +26,17 @@
 <script>
 import { mapState } from "vuex";
 import PopUps from "@/components/PopUps.vue";
+import GoalList from "@/components/GoalList.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
+
 export default {
   name: "HomeView",
   components: {
     PopUps,
     PlantPlanter,
     ReportGoal,
+    GoalList,
   },
   data: () => {
     return {
@@ -73,11 +77,11 @@ export default {
       }
     },
     untilgoal() {
-      const days = this.$store.getters["firebase/getUntilDays"](this.currentGoalId)
-      if(!days) return undefined
-      const untilgoal = Math.floor(days.getTime() / 3600 / 1000/ 24)
-      return untilgoal
-    }
+      const days = this.$store.getters["firebase/getUntilDays"](this.currentGoalId);
+      if (!days) return undefined;
+      const untilgoal = Math.floor(days.getTime() / 3600 / 1000 / 24);
+      return untilgoal;
+    },
   },
 };
 </script>
