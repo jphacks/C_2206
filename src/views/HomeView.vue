@@ -23,13 +23,13 @@
       <div class="bg">
         <v-container>
           <v-row class="mx-auto mt-11" justify="center">
-            <v-progress-circular :size="70" :width="7" color="green" indeterminate></v-progress-circular>
+            <v-progress-circular :size="80" :width="7" color="green" indeterminate></v-progress-circular>
           </v-row>
           <v-row class=" mt-6" align-content="center" justify="center">
             <h3 text-align="center">ちょっとまってね。。。</h3>
           </v-row>
-          <div class="ippon">
-            <img src="../assets/sports_01.png" />
+          <div class="mt-14 ippon">
+            <img src="../assets/ippon.png" />
           </div>
         </v-container>
       </div>
@@ -58,7 +58,7 @@ export default {
     this.$store.dispatch("firebase/reloadUserInfo").then(() => {
       const goals = this.$store.getters["firebase/getGoals"];
       if (goals) this.$store.commit("user/setCurrentGoalId", goals.slice(-1)[0].id);
-      //this.loading = false;
+      this.loading = false;
     });
   },
   methods: {
@@ -153,7 +153,7 @@ export default {
 }
 
 .ippon img {
-  width: 35%;
+  width: 40%;
   height: auto;
 }
 </style>
