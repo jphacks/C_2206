@@ -58,7 +58,7 @@ export default {
     this.$store.dispatch("firebase/reloadUserInfo").then(() => {
       const goals = this.$store.getters["firebase/getGoals"];
       if (goals) this.$store.commit("user/setCurrentGoalId", goals.slice(-1)[0].id);
-      //this.loading = false;
+      this.loading = false;
     });
   },
   methods: {
