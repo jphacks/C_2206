@@ -28,7 +28,7 @@
         <ErrorMsg />
       </v-row>
       <v-row align-content="center">
-        <a class="mx-auto mt-10">アカウントを作成</a>
+        <router-link to="signup" class="mx-auto mt-10">アカウントを作成</router-link>
       </v-row>
     </v-container>
   </v-form>
