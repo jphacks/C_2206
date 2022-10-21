@@ -7,38 +7,35 @@
           <v-btn text class="white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
         <PopUps />
-        <v-img class="cloud" v-bind="attrs" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
+        <v-img class="cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
           <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまであと<br />にち</p>
         </v-img>
+        <GoalList />
         <ReportGoal />
         <v-row style="height: 230px"></v-row>
-        
-        
-        
+
         <PlantPlanter :goalTitle="goalTitle" />
       </v-container>
-
-      <!-- 以下デバッグよう-->
     </div>
     <div v-else>loading...</div>
   </div>
 </template>
 
 <script>
-import { v4 as uuid } from "uuid";
 import { mapState } from "vuex";
-import { Timestamp } from "firebase/firestore";
 import PopUps from "@/components/PopUps.vue";
+import GoalList from "@/components/GoalList.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
+
 export default {
   name: "HomeView",
   components: {
     PopUps,
     PlantPlanter,
     ReportGoal,
-    
-},
+    GoalList,
+  },
   data: () => {
     return {
       loading: true,
@@ -56,39 +53,6 @@ export default {
       this.$store.dispatch("user/signOut").then(() => {
         this.$router.push({ name: "top" });
       });
-    },
-    addrecord(goalId) {
-      this.$store.dispatch("firebase/addRecord", {
-        id: uuid(),
-        goalId: goalId,
-        createdAt: Timestamp.fromDate(new Date(2022, 10, 16, 14, 0)),
-        value: {
-          type: "count",
-          value: 10,
-        },
-      });
-    },
-    addgoal() {
-      this.$store.dispatch("firebase/addGoal", {
-        id: uuid(),
-        title: "読書",
-        createdAt: Timestamp.fromDate(new Date()),
-        startDate: Timestamp.fromDate(new Date(2022, 10 - 1, 16)),
-        endDate: Timestamp.fromDate(new Date(2022, 10 - 1, 30)),
-        dayGoal: {
-          type: "count",
-          value: 1,
-        },
-      });
-    },
-    removeGoal(id) {
-      this.$store.dispatch("firebase/removeGoal", id);
-    },
-    removerecord(id) {
-      this.$store.dispatch("firebase/removeRecord", id);
-    },
-    reloadUserInfo() {
-      this.$store.dispatch("firebase/reloadUserInfo");
     },
   },
   computed: {
@@ -110,11 +74,12 @@ export default {
         return "名無しの木";
       }
     },
-    // untilgoal() {
-    //   const days = this.$store.getters["firebase/getUntilDays"]
-    //   const untilgoal = (days.getTime() / 3600 / 1000/ )
-    //   return untilgoal
-    // }
+    untilgoal() {
+      const days = this.$store.getters["firebase/getUntilDays"](this.currentGoalId);
+      if (!days) return undefined;
+      const untilgoal = Math.floor(days.getTime() / 3600 / 1000 / 24);
+      return untilgoal;
+    },
   },
 };
 </script>
@@ -130,7 +95,7 @@ export default {
   margin-right: -15px;
 }
 
-.cloud{
+.cloud {
   margin-top: -130px;
   margin-left: -10px;
 }
