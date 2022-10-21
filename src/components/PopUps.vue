@@ -10,13 +10,20 @@
         </v-img>
       </template>
       <v-card>
-        <v-toolbar color="#009A5B" dark class="mx-auto text-h5"> どのようにがんばろう？ </v-toolbar>
+        <v-container class="green darken-1 white--text" >
+          <v-row class="" align-content="center">
+            <v-btn icon absolute right justify-content="space-between" class="cursive close" @click="closeDialog">
+              <v-icon color="white">mdi-close</v-icon>
+            </v-btn>
+            <v-col class="cap text-h5 pt-5 ">なにをがんばろう？</v-col>
+          </v-row>
+        </v-container>
         <v-card-text>
           <v-container>
-            <v-row>
+            <v-row >
               <!-- 「なにを」 -->
-              <v-col cols="12" sm="6" class="pt-7 pl-14">
-                <p class="text-h5">なにを</p>
+              <v-col cols="12" sm="6" class="pt-7 ">
+                <p class=" cap text-h5">なにを</p>
               </v-col>
 
               <v-col cols="12" sm="6">
@@ -25,9 +32,9 @@
               </v-col>
 
               <!-- 「くわしくかこう」 -->
-              <v-col cols="12" sm="6" class="pt-4 pl-14">
+              <v-col cols="12" sm="6" class="pt-4 ">
                 <div v-if="inits">
-                  <p class="text-h7">がんばることをくわしくかこう<br />(さらあらい、ジョギングなど)</p>
+                  <p class="cap text-h7">がんばることをくわしくかこう<br />(さらあらい、ジョギングなど)</p>
                 </div>
               </v-col>
 
@@ -39,9 +46,9 @@
 
               <!-- 「どのぐらい」 -->
 
-              <v-col cols="12" sm="6" class="pl-14">
+              <v-col cols="12" sm="6" class="">
                 <div v-if="inits">
-                  <p class="text-h5">どのぐらい</p>
+                  <p class="cap text-h5">どのぐらい</p>
                 </div>
               </v-col>
 
@@ -68,8 +75,8 @@
 
               <!-- 「じかん」-->
               <v-col cols="12" sm="12">
-                <div v-if="howMuchTime">
-                  <vue-timepicker v-model="howLong"></vue-timepicker>
+                <div v-if="howMuchTime" class="time">
+                  <vue-timepicker placeholder="じかん：ふん" v-model="howLong"></vue-timepicker>
                 </div>
               </v-col>
 
@@ -82,9 +89,9 @@
 
               <!-- 「カレンダー」 -->
 
-              <v-col cols="12" sm="12" class="pl-10">
+              <v-col cols="12" sm="12" class="">
                 <div v-if="tillWhenToWhen">
-                  <p class="text-h6">いつから・いつまでに</p>
+                  <p class="cap text-h6">いつから・いつまでに</p>
                 </div>
               </v-col>
               <v-col cols="12">
@@ -120,6 +127,12 @@
                           <div v-if="dateIsWrong">
                             <small>「いつまで」が「いつから」よりもむかしだよ！</small>
                           </div>
+                          <div v-if="timeIsWrong">
+                            <small>じかんがおかしいよ！</small>
+                          </div>
+                          <div v-if="intIsWrong">
+                            <small>なにかがにゅうりょくされてないよ！</small>
+                          </div>
                         </v-row>
                       </v-row>
                     </v-container>
@@ -131,10 +144,11 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDialog"> やめる </v-btn>
-          <div v-if="OKButton">
-            <v-btn x-large color="#C75959" dark @click="makeGoal"> OK！ </v-btn>
-          </div>
+
+          <v-row v-if="OKButton" align-content="center" class="mb-6">
+            <v-btn x-large class="cursive white--text text-h4 pr-7" color="red accent-2" @click="makeGoal">OK!</v-btn>
+          </v-row>
+
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -163,6 +177,8 @@ export default {
     name: undefined,
     dialog: false,
     dateError: false,
+    timeError: false,
+    intError: false,
   }),
   methods: {
     //初期の表示設定
@@ -182,10 +198,32 @@ export default {
     makeGoal() {
       let start = new Date(this.date)
       let end = new Date(this.date2)
+      let time = this.howLong
+      let int = this.howMuch
+      console.log(time)
 
       if (start.getTime() > end.getTime()) {
         this.dateError = true
         console.log("Date Error")
+        return 1
+      }
+
+      if (time['HH'] == "00" && time['mm'] == "00") {
+        this.timeError = true
+        console.log("Time Error")
+        return 1
+      }
+
+      if (time == undefined) {
+        this.intError = true
+        console.log("Null Error")
+        return 1
+      }
+
+
+      if (int == undefined) {
+        this.nullError = true
+        console.log("Null Error")
         return 1
       }
 
@@ -259,6 +297,12 @@ export default {
     dateIsWrong() {
       return this.dateError == true;
     },
+    timeIsWrong() {
+      return this.timeError == true;
+    },
+    intIsWrong() {
+      return this.intError == true;
+    },
     OKButton() {
       return this.date != null && this.date2 != null
     }
@@ -275,8 +319,16 @@ export default {
 //dataプロパティが更新されたらcomputedが更新されるようにする
 </script>
 
-<style>
+<style scoped>
 small {
   color: red;
+}
+
+.time {
+  text-align: center;
+}
+
+.cap {
+  text-align: center;
 }
 </style>
