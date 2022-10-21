@@ -17,9 +17,9 @@
         <ReportGoal/>
         <RecordList :recordList="recordList" />
 
+        <PlantPlanter :goalTitle="goalTitle" />
         <v-row style="height: 230px"></v-row>
 
-        <PlantPlanter :goalTitle="goalTitle" />
       </v-container>
     </div>
     <div v-else>loading...</div>

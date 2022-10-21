@@ -42,6 +42,13 @@ const getters = {
       }});
     }
   },
+  getAchevemetntById: (state) => (goalid) => {
+    if (state.userInfo && state.userInfo.recordSummary) {
+      return state.userInfo.recordSummary.filter((summary) => {if(summary.goalId == goalid){
+        return summary.achevement
+      }})[0];
+    }
+  }
 };
 const actions = {
   // ユーザーの情報をfirebaseから再読み込みする
