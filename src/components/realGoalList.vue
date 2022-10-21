@@ -2,7 +2,7 @@
   <v-row class="mt-3" justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-img v-bind="attrs" v-on="on" src="@/assets/cloud.png" max-height="200" max-width="200" style="align-items: center">
+        <v-img v-bind="attrs" v-on="on" src="@/assets/cloud.png" style="align-items: center">
           <p style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">もくひょうの<br />いちらん</p>
         </v-img>
       </template>
@@ -11,19 +11,13 @@
         <v-card-text>
           <v-container>
             <template>
-  <v-data-table
-    :headers="headers"
-    :items="desserts"
-    :items-per-page="5"
-    class="elevation-1"
-  ></v-data-table>
-</template>
+              <v-data-table :headers="headers" :items="goals" :items-per-page="5" class="elevation-1"></v-data-table>
+            </template>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="#009A5B" text @click="closeDialog"> とじる </v-btn>
-          
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -32,7 +26,6 @@
 
 <script>
 import { mapState } from "vuex";
-
 
 import { v4 as uuid } from "uuid";
 import { Timestamp } from "firebase/firestore";
@@ -54,26 +47,25 @@ export default {
 
     //表
     headers: [
-          {
-            text: '',
-            align: 'start',
-            sortable: false,
-            value: 'name',
-          },
-          { text: ' がんばること', value: 'title' },
-          { text: 'ないよう', value: 'sub_title' },
-          { text: 'いつから', value: 'start' },
-          { text: 'いつまで', value: 'goal' },
-        ],
-        desserts: [
-          {
-            title: 'べんきょう',
-            sub_title: 'フランス語',
-            start: `YYYY/MM/DD`,
-            goal: `YYYY/MM/DD`,
-          },
-        ],
-
+      {
+        text: "",
+        align: "start",
+        sortable: false,
+        value: "name",
+      },
+      { text: " がんばること", value: "title" },
+      { text: "ないよう", value: "sub_title" },
+      { text: "いつから", value: "start" },
+      { text: "いつまで", value: "goal" },
+    ],
+    goals: [
+      {
+        title: "べんきょう",
+        sub_title: "フランス語",
+        start: `YYYY/MM/DD`,
+        goal: `YYYY/MM/DD`,
+      },
+    ],
   }),
   methods: {
     //初期の表示設定＿
@@ -162,9 +154,7 @@ export default {
       this.dateFormatted = this.formatDate(this.date);
     },
   },
-  components: {
-   
-  },
+  components: {},
 };
 //dataプロパティが更新されたらcomputedが更新されるようにする
 </script>
