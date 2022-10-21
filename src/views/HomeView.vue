@@ -7,11 +7,11 @@
           <v-btn text class="white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
         <PopUps />
-        <realGoalList />
+        <realGoalList :goalList="goalList"/>
         <v-img class="cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
-          <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまであと<br />にち</p>
+          <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまで<br />あと{{ untilgoal }}にち</p>
         </v-img>
-        <ReportGoal />
+        <ReportGoal  />
         <GoalList />
         <v-row style="height: 230px"></v-row>
 
@@ -29,6 +29,11 @@ import GoalList from "@/components/GoalList.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
 import realGoalList from "@/components/realGoalList.vue";
+
+const getDate = (date) => {
+  const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
+  return `${year}/${month}/${day}`;
+};
 
 export default {
   name: "HomeView",
@@ -68,7 +73,7 @@ export default {
       // const currentGoalId = this.$store.getters["user/getCurrentGoalId"];
       if (this.currentGoalId && goals.length > 0) {
         const goal = goals.filter((goal) => goal.id == this.currentGoalId)[0];
-        if (goal["sub_title"]) {
+        if (goal && goal["sub_title"]) {
           return goal["sub_title"];
         } else {
           return "名無しの木";
@@ -82,6 +87,22 @@ export default {
       if (!days) return undefined;
       const untilgoal = Math.floor(days.getTime() / 3600 / 1000 / 24);
       return untilgoal;
+    },
+    goalList() {
+      const goals = this.$store.getters["firebase/getGoals"];
+      console.log(goals)
+      console.log(typeof(goals))
+      if (goals && goals.length > 0) {
+        return goals.map((goal) => {
+          return {
+            id: goal.id,
+            title: goal.title,
+            sub_title: goal.sub_title,
+            start: getDate(goal.startDate.toDate()),
+            goal: getDate(goal.endDate.toDate()),
+          };
+        });
+      } else return undefined;
     },
   },
 };
