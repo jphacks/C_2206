@@ -32,7 +32,7 @@ const getters = {
   getUntilDays: (state) => (id) => {
     if (state.userInfo && state.userInfo.goals) {
       const goal = state.userInfo.goals.filter((goal) => goal.id == id)[0];
-      return new Date(goal.endDate.toDate().getTime() - new Date().getTime());
+      if (goal) return new Date(goal.endDate.toDate().getTime() - new Date().getTime());
     }
   },
   getRecordsByGoalId: (state) => (goalid)=>{

@@ -11,10 +11,12 @@
         <realGoalList :goalList="goalList" />
 
         <v-img class="cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
-          <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまであと<br />にち</p>
+          <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまで<br />あと{{ untilgoal }}にち</p>
         </v-img>
-        <ReportGoal :recordList="recordList" />
+
+        <ReportGoal/>
         <RecordList :recordList="recordList" />
+
         <v-row style="height: 230px"></v-row>
 
         <PlantPlanter :goalTitle="goalTitle" />
@@ -37,12 +39,14 @@ const getDate = (date) => {
   return `${year}/${month}/${day}`;
 };
 
+
 const getHourMinuteStr = (date) => {
   const minutes = Math.floor(date.getTime() / 1000 / 60);
   const hour = Math.floor(minutes / 60);
   const minute = minutes % 60;
   return `${hour}時間${minute}分`;
 };
+
 
 export default {
   name: "HomeView",
@@ -82,7 +86,7 @@ export default {
       // const currentGoalId = this.$store.getters["user/getCurrentGoalId"];
       if (this.currentGoalId && goals.length > 0) {
         const goal = goals.filter((goal) => goal.id == this.currentGoalId)[0];
-        if (goal["sub_title"]) {
+        if (goal && goal["sub_title"]) {
           return goal["sub_title"];
         } else {
           return "名無しの木";
