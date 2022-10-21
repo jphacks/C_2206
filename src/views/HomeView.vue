@@ -7,11 +7,12 @@
           <v-btn text class="white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
         <PopUps />
+        <realGoalList />
         <v-img class="cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
           <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまであと<br />にち</p>
         </v-img>
-        <GoalList />
         <ReportGoal />
+        <GoalList />
         <v-row style="height: 230px"></v-row>
 
         <PlantPlanter :goalTitle="goalTitle" />
@@ -27,6 +28,7 @@ import PopUps from "@/components/PopUps.vue";
 import GoalList from "@/components/GoalList.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
+import realGoalList from "@/components/realGoalList.vue";
 
 export default {
   name: "HomeView",
@@ -34,6 +36,7 @@ export default {
     PopUps,
     PlantPlanter,
     ReportGoal,
+    realGoalList,
     GoalList,
   },
   data: () => {
