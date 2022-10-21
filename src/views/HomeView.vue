@@ -15,6 +15,7 @@
         </v-row>
         <v-row style="height: 150px"></v-row>
         <v-row class="brown lighten-1 white--text mt-16" style="height: 270px"> </v-row>
+        <ipponMovement />
         <PlantPlanter :goalTitle="goalTitle" />
       </v-container>
     </div>
@@ -27,12 +28,14 @@ import { mapState } from "vuex";
 import PopUps from "@/components/PopUps.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
+import ipponMovement from "@/components/ipponMovement.vue";
 export default {
   name: "HomeView",
   components: {
     PopUps,
     PlantPlanter,
     ReportGoal,
+    ipponMovement,
   },
   data: () => {
     return {
