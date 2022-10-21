@@ -29,7 +29,7 @@
             <h3 text-align="center">ちょっとまってね。。。</h3>
           </v-row>
           <div class="mt-14 ippon">
-            <img src="../assets/ippon.png" />
+            <img src="../assets/loading.png" />
           </div>
         </v-container>
       </div>
@@ -58,7 +58,7 @@ export default {
     this.$store.dispatch("firebase/reloadUserInfo").then(() => {
       const goals = this.$store.getters["firebase/getGoals"];
       if (goals) this.$store.commit("user/setCurrentGoalId", goals.slice(-1)[0].id);
-      this.loading = false;
+      //this.loading = false;
     });
   },
   methods: {
@@ -153,7 +153,7 @@ export default {
 }
 
 .ippon img {
-  width: 40%;
+  width: 65%;
   height: auto;
 }
 </style>
