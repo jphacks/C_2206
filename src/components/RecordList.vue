@@ -11,7 +11,7 @@
         <v-card-text>
           <v-container>
             <template>
-              <v-data-table :headers="headers" :items="records" :items-per-page="5" class="elevation-1"></v-data-table>
+              <v-data-table :headers="headers" :items="recordList" :items-per-page="5" class="elevation-1"></v-data-table>
             </template>
           </v-container>
         </v-card-text>
@@ -25,9 +25,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 export default {
-  name: "GoalList",
+  name: "RecordList",
+  props: {
+    recordList: Array,
+  },
   data: () => ({
     dialog: false,
 
@@ -39,17 +41,13 @@ export default {
         sortable: false,
         value: "name",
       },
-      { text: " がんばったこと", value: "title" },
-      { text: "ないよう", value: "sub_title" },
-      { text: "いつから", value: "start" },
-      { text: "いつまで", value: "goal" },
+      { text: "いつ", value: "date" },
+      { text: "どのくらい", value: "value" },
     ],
     records: [
       {
-        title: "べんきょう",
-        sub_title: "フランス語",
-        start: `YYYY/MM/DD`,
-        goal: `YYYY/MM/DD`,
+        date: "2022/10/21",
+        value: "あたい",
       },
     ],
   }),
@@ -58,8 +56,6 @@ export default {
       this.dialog = false;
     },
   },
-  computed: {
-    ...mapState(["user"]),
-  },
+  computed: {},
 };
 </script>

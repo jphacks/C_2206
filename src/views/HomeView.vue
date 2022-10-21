@@ -7,12 +7,16 @@
           <v-btn text class="white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
         <PopUps />
-        <realGoalList :goalList="goalList"/>
+
+        <realGoalList :goalList="goalList" />
+
         <v-img class="cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
           <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまで<br />あと{{ untilgoal }}にち</p>
         </v-img>
-        <ReportGoal  />
-        <GoalList />
+
+        <ReportGoal/>
+        <RecordList :recordList="recordList" />
+
         <v-row style="height: 230px"></v-row>
 
         <PlantPlanter :goalTitle="goalTitle" />
@@ -25,7 +29,7 @@
 <script>
 import { mapState } from "vuex";
 import PopUps from "@/components/PopUps.vue";
-import GoalList from "@/components/GoalList.vue";
+import RecordList from "@/components/RecordList.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
 import realGoalList from "@/components/realGoalList.vue";
@@ -35,6 +39,15 @@ const getDate = (date) => {
   return `${year}/${month}/${day}`;
 };
 
+
+const getHourMinuteStr = (date) => {
+  const minutes = Math.floor(date.getTime() / 1000 / 60);
+  const hour = Math.floor(minutes / 60);
+  const minute = minutes % 60;
+  return `${hour}時間${minute}分`;
+};
+
+
 export default {
   name: "HomeView",
   components: {
@@ -42,7 +55,7 @@ export default {
     PlantPlanter,
     ReportGoal,
     realGoalList,
-    GoalList,
+    RecordList,
   },
   data: () => {
     return {
@@ -90,8 +103,6 @@ export default {
     },
     goalList() {
       const goals = this.$store.getters["firebase/getGoals"];
-      console.log(goals)
-      console.log(typeof(goals))
       if (goals && goals.length > 0) {
         return goals.map((goal) => {
           return {
@@ -103,6 +114,22 @@ export default {
           };
         });
       } else return undefined;
+    },
+    recordList() {
+      const rawRecords = this.$store.getters["firebase/getRecordsByGoalId"](this.currentGoalId);
+      return rawRecords.map((r) => {
+        if (r.value.type == "timestamp") {
+          return {
+            date: getDate(r.createdAt.toDate()),
+            value: getHourMinuteStr(r.value.value.toDate()),
+          };
+        } else {
+          return {
+            date: getDate(r.createdAt.toDate()),
+            value: r.value.value,
+          };
+        }
+      });
     },
   },
 };
