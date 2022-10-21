@@ -7,12 +7,14 @@
           <v-btn text class="white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
         <PopUps />
-        <realGoalList />
+
+        <realGoalList :goalList="goalList" />
+
         <v-img class="cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
           <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまであと<br />にち</p>
         </v-img>
-        <ReportGoal />
-        <GoalList />
+        <ReportGoal :recordList="recordList" />
+        <RecordList :recordList="recordList" />
         <v-row style="height: 230px"></v-row>
 
         <PlantPlanter :goalTitle="goalTitle" />
@@ -25,10 +27,22 @@
 <script>
 import { mapState } from "vuex";
 import PopUps from "@/components/PopUps.vue";
-import GoalList from "@/components/GoalList.vue";
+import RecordList from "@/components/RecordList.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
 import realGoalList from "@/components/realGoalList.vue";
+
+const getDate = (date) => {
+  const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
+  return `${year}/${month}/${day}`;
+};
+
+const getHourMinuteStr = (date) => {
+  const minutes = Math.floor(date.getTime() / 1000 / 60);
+  const hour = Math.floor(minutes / 60);
+  const minute = minutes % 60;
+  return `${hour}時間${minute}分`;
+};
 
 export default {
   name: "HomeView",
@@ -37,7 +51,7 @@ export default {
     PlantPlanter,
     ReportGoal,
     realGoalList,
-    GoalList,
+    RecordList,
   },
   data: () => {
     return {
@@ -82,6 +96,36 @@ export default {
       if (!days) return undefined;
       const untilgoal = Math.floor(days.getTime() / 3600 / 1000 / 24);
       return untilgoal;
+    },
+    goalList() {
+      const goals = this.$store.getters["firebase/getGoals"];
+      if (goals && goals.length > 0) {
+        return goals.map((goal) => {
+          return {
+            id: goal.id,
+            title: goal.title,
+            sub_title: goal.sub_title,
+            start: getDate(goal.startDate.toDate()),
+            goal: getDate(goal.endDate.toDate()),
+          };
+        });
+      } else return undefined;
+    },
+    recordList() {
+      const rawRecords = this.$store.getters["firebase/getRecordsByGoalId"](this.currentGoalId);
+      return rawRecords.map((r) => {
+        if (r.value.type == "timestamp") {
+          return {
+            date: getDate(r.createdAt.toDate()),
+            value: getHourMinuteStr(r.value.value.toDate()),
+          };
+        } else {
+          return {
+            date: getDate(r.createdAt.toDate()),
+            value: r.value.value,
+          };
+        }
+      });
     },
   },
 };

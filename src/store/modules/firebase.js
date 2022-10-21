@@ -35,6 +35,13 @@ const getters = {
       return new Date(goal.endDate.toDate().getTime() - new Date().getTime());
     }
   },
+  getRecordsByGoalId: (state) => (goalid)=>{
+    if (state.userInfo && state.userInfo.records) {
+      return state.userInfo.records.filter((record) => {if(record.goalId == goalid){
+        return record
+      }});
+    }
+  },
 };
 const actions = {
   // ユーザーの情報をfirebaseから再読み込みする
