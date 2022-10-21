@@ -9,7 +9,8 @@
         <PopUps />
         <ReportGoal />
         <v-row style="height: 40px"></v-row>
-        <v-row justify="center" align-content="center" class="grey lighten-1 white--text mt-16 mx-16" style="height: 70px">
+        <v-row justify="center" align-content="center" class="grey lighten-1 white--text mt-16 mx-16"
+          style="height: 70px">
           <!--PopUp.vueで設定した期間から残りの時間を導いてuntilgoalに代入-->
           <div>しゅうかくまであと{{ untilgoal }}にち</div>
         </v-row>
@@ -18,7 +19,21 @@
         <PlantPlanter :goalTitle="goalTitle" />
       </v-container>
     </div>
-    <div v-else>loading...</div>
+    <div v-else>
+      <div class="bg">
+        <v-container>
+          <v-row class="mx-auto mt-11" justify="center">
+            <v-progress-circular :size="70" :width="7" color="green" indeterminate></v-progress-circular>
+          </v-row>
+          <v-row class=" mt-6" align-content="center" justify="center">
+            <h3 text-align="center">ちょっとまってね。。。</h3>
+          </v-row>
+          <div class="ippon">
+            <img src="../assets/sports_01.png" />
+          </div>
+        </v-container>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,7 +58,7 @@ export default {
     this.$store.dispatch("firebase/reloadUserInfo").then(() => {
       const goals = this.$store.getters["firebase/getGoals"];
       if (goals) this.$store.commit("user/setCurrentGoalId", goals.slice(-1)[0].id);
-      this.loading = false;
+      //this.loading = false;
     });
   },
   methods: {
@@ -74,8 +89,8 @@ export default {
     },
     untilgoal() {
       const days = this.$store.getters["firebase/getUntilDays"](this.currentGoalId)
-      if(!days) return undefined
-      const untilgoal = Math.floor(days.getTime() / 3600 / 1000/ 24)
+      if (!days) return undefined
+      const untilgoal = Math.floor(days.getTime() / 3600 / 1000 / 24)
       return untilgoal
     }
   },
@@ -83,6 +98,12 @@ export default {
 </script>
 
 <style>
+.bg {
+  width: 100%;
+  height: 100vh;
+  background-image: url("../assets/background.png");
+}
+
 .home-content {
   background-color: rgb(202, 225, 234);
   width: 100%;
@@ -121,5 +142,18 @@ export default {
   color: black;
   font-size: xx-large;
   font-weight: bold;
+}
+
+.v-progress-circular {
+  margin: 1rem;
+}
+
+.ippon {
+  text-align: center;
+}
+
+.ippon img {
+  width: 35%;
+  height: auto;
 }
 </style>
