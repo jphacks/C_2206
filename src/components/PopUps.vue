@@ -1,13 +1,13 @@
 <template>
-  <v-row class="mt-3" justify="center">
+  <v-row class="mt-n14">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on"> たねをまく </v-btn>
+        <v-img class="ml-n3" v-bind="attrs" v-on="on" src="@/assets/sun.png" max-height="200" max-width="200" style="align-items: center">
+          <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">もくひょう<br />せってい</p>
+        </v-img>
       </template>
       <v-card>
-        <v-toolbar color="#009A5B" dark class="mx-auto text-h5">
-          どのようにがんばろう？
-        </v-toolbar>
+        <v-toolbar color="#009A5B" dark class="mx-auto text-h5"> どのようにがんばろう？ </v-toolbar>
         <v-card-text>
           <v-container>
             <v-row>
@@ -17,14 +17,13 @@
               </v-col>
 
               <v-col cols="12" sm="6">
-                <v-select :items="['べんきょう', 'うんどう', 'おてつだい', 'どくしょ']" filled label="かならずえらんでね" dense required
-                  v-model="what"></v-select>
+                <v-select :items="['べんきょう', 'うんどう', 'おてつだい', 'どくしょ']" filled label="かならずえらんでね" dense required v-model="what"></v-select>
               </v-col>
 
               <!-- 「くわしくかこう」 -->
               <v-col cols="12" sm="6" class="pt-4 pl-14">
                 <div v-if="inits">
-                  <p class="text-h7">がんばることをくわしくかこう<br>(さらあらい、ジョギングなど)</p>
+                  <p class="text-h7">がんばることをくわしくかこう<br />(さらあらい、ジョギングなど)</p>
                 </div>
               </v-col>
 
@@ -44,8 +43,7 @@
 
               <v-col cols="12" sm="6">
                 <div v-if="inits">
-                  <v-select :items="['かい', 'さつ', 'じかん', 'こ']" filled label="かならずえらんでね" dense required v-model="init">
-                  </v-select>
+                  <v-select :items="['かい', 'さつ', 'じかん', 'こ']" filled label="かならずえらんでね" dense required v-model="init"> </v-select>
                 </div>
               </v-col>
 
@@ -90,21 +88,17 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
-                          <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false"
-                            transition="scale-transition" offset-y max-width="290px" min-width="auto">
+                          <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                              <v-text-field v-model="date" label="いつから" persistent-hint prepend-icon="mdi-calendar"
-                                v-bind="attrs" v-on="on"></v-text-field>
+                              <v-text-field v-model="date" label="いつから" persistent-hint prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
                             </template>
                             <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                           </v-menu>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false"
-                            transition="scale-transition" offset-y max-width="290px" min-width="auto">
+                          <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                              <v-text-field v-model="date2" label="いつまで" persistent-hint prepend-icon="mdi-calendar"
-                                v-bind="attrs" v-on="on"></v-text-field>
+                              <v-text-field v-model="date2" label="いつまで" persistent-hint prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
                             </template>
                             <v-date-picker v-model="date2" no-title @input="menu2 = false"></v-date-picker>
                           </v-menu>
@@ -132,10 +126,10 @@ import { mapState } from "vuex";
 import VueTimepicker from "vue2-timepicker";
 import "vue2-timepicker/dist/VueTimepicker.css";
 import { v4 as uuid } from "uuid";
-import { Timestamp } from 'firebase/firestore'
+import { Timestamp } from "firebase/firestore";
 
 export default {
-  name: "LoginForm",
+  name: "PopUps",
   data: () => ({
     date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
     date2: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
@@ -149,7 +143,6 @@ export default {
     name: undefined,
     dialog: false,
   }),
-
   methods: {
     //初期の表示設定
 
@@ -166,31 +159,30 @@ export default {
       this.dialog = false;
     },
     makeGoal() {
-      let value = undefined
-      let type = undefined
-      let sub_title = undefined
+      let value = undefined;
+      let type = undefined;
+      let sub_title = undefined;
       const Sub_titleDefine = () => {
         if (this.name != undefined) {
-          sub_title = this.name
+          sub_title = this.name;
+        } else {
+          sub_title = this.what;
         }
-        else {
-          sub_title = this.what
-        }
-      }
+      };
       const DayGoalDefine = () => {
         if (this.howMuch != undefined) {
-          type = "count"
-          value = this.howMuch
+          type = "count";
+          value = this.howMuch;
+        } else if (this.howLong != undefined) {
+          type = "timestamp";
+          value = Timestamp.fromDate(new Date((this.howLong.HH * 3600 + this.howLong.mm * 60) * 1000));
         }
-        else if (this.howLong != undefined) {
-          type = "timestamp"
-          value = Timestamp.fromDate(this.howLong)
-        }
-      }
+      };
       Sub_titleDefine();
       DayGoalDefine();
+      const goalid = uuid();
       const data = {
-        id: uuid(),
+        id: goalid,
         title: this.what,
         sub_title: sub_title,
         createdAt: Timestamp.now(),
@@ -198,10 +190,11 @@ export default {
         endDate: Timestamp.fromDate(new Date(this.date2)),
         dayGoal: {
           type: type,
-          value: value
+          value: value,
         },
-      }
-      this.$store.dispatch("firebase/addGoal", data)
+      };
+      this.$store.commit("user/setCurrentGoalId", goalid);
+      this.$store.dispatch("firebase/addGoal", data);
       this.dialog = false;
     },
   },
@@ -240,7 +233,6 @@ export default {
   components: {
     "vue-timepicker": VueTimepicker,
   },
-
 };
 //dataプロパティが更新されたらcomputedが更新されるようにする
 </script>

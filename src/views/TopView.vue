@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="top">
     <LoginForm />
   </div>
 </template>
@@ -11,8 +11,13 @@ export default {
   components: {
     LoginForm,
   },
-  methods: {
-
-  },
 };
 </script>
+
+<style>
+.top {
+  width: 100%;
+  height: 100vh;
+  background-image: url("@/assets/background.png");
+}
+</style>
