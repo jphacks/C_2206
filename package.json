@@ -10,7 +10,8 @@
   "dependencies": {
     "@mdi/font": "^7.0.96",
     "core-js": "^3.8.3",
-    "firebase": "9.9.4",
+    "firebase": "^9.12.1",
+    "firebase-tools": "^11.14.4",
     "uuid": "^9.0.0",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
