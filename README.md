@@ -1,6 +1,5 @@
 # Plan Plant
-
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2022/08/JPHACKS2022_ogp.jpg)](https://www.youtube.com/watch?v=LUPQFB4QyVo)
+![logo_with_ippon](https://user-images.githubusercontent.com/83295760/197318142-1315a6fe-d948-40e0-b541-31e6b7ef7709.png)
 
 ## 製品概要
 
