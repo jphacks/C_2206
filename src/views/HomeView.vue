@@ -14,8 +14,9 @@
         </v-img>
         <ReportGoal class="three"/>
         
-        <ipponMovement class="one"/>
+        <ipponMovement class="one"  v-if="rawIpponName" :rawIpponName="rawIpponName"/>
         <PlantPlanter :goalTitle="goalTitle" :achevement="achevement" :dayRate="dayRate" />
+
       </v-container>
     </div>
     <div v-else>
@@ -40,7 +41,7 @@
 import { mapState } from "vuex";
 import PopUps from "@/components/PopUps.vue";
 import RecordList from "@/components/RecordList.vue";
-import PlantPlanter from "@/components/PlantPlanter.vue";
+// import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
 import ipponMovement from "@/components/ipponMovement.vue";
 import realGoalList from "@/components/realGoalList.vue";
@@ -57,11 +58,21 @@ const getHourMinuteStr = (date) => {
   return `${hour}時間${minute}分`;
 };
 
+const title2ipponName = {
+  べんきょう: "study",
+  うんどう: "sport",
+  どくしょ: "reading",
+  がいこくご: "language",
+  おんがく: "music",
+  はやおき: "getup",
+  えをかく: "art",
+};
+
 export default {
   name: "HomeView",
   components: {
     PopUps,
-    PlantPlanter,
+    // PlantPlanter,
     ReportGoal,
     ipponMovement,
     realGoalList,
@@ -146,6 +157,17 @@ export default {
     },
     dayRate() {
       return this.$store.getters["firebase/getDayRate"](this.currentGoalId);
+    },
+    rawIpponName() {
+      if (this.untilgoal <= 0) {
+        const goal = this.$store.getters["firebase/getOneGoal"](this.currentGoalId);
+        console.log(goal.title)
+        console.log(title2ipponName[goal.title])
+        if (goal && goal.title) {
+          return title2ipponName[goal.title];
+        }
+      }
+      return undefined;
     },
   },
 };
