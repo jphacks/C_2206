@@ -97,7 +97,7 @@
                         <v-col cols="12" sm="6">
                           <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                              <v-text-field v-model="date" label="いつから" persistent-hint prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
+                              <v-text-field v-model="date" label="いつから" readonly persistent-hint prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
                             </template>
                             <v-date-picker v-model="date" no-title @input="menu1 = false" :min="new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10)">
                             </v-date-picker>
@@ -106,7 +106,7 @@
                         <v-col cols="12" sm="6">
                           <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                              <v-text-field v-model="date2" label="いつまで" persistent-hint prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
+                              <v-text-field v-model="date2" label="いつまで" readonly persistent-hint prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
                             </template>
                             <v-date-picker v-model="date2" no-title @input="menu2 = false" :min="new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10)">
                             </v-date-picker>
