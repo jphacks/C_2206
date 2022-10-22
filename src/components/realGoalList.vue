@@ -1,6 +1,6 @@
 <template>
   <v-row class="mt-3" justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn absolute right large class="goal orange lighten-5 brown--text text--darken-6"    v-bind="attrs" v-on="on" style="align-items: center">
           <p style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">せっていした<br />もくひょう</p>

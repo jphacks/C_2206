@@ -1,6 +1,6 @@
 <template>
   <v-row class="mt-n14">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-img class="ml-n3" v-bind="attrs" v-on="on" src="@/assets/sun.png" max-height="200" max-width="200" style="align-items: center">
           <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">もくひょう<br />せってい</p>
@@ -8,11 +8,11 @@
       </template>
       <v-card>
         <v-container class="green darken-1 white--text">
-          <v-row class="" align-content="center">
+          <v-row class="" align-content="" justify-content="space-between">
+            <v-col class="cap text-h5 pt-5">なにをがんばろう？</v-col>
             <v-btn icon absolute right justify-content="space-between" class="cursive close" @click="closeDialog">
               <v-icon color="white">mdi-close</v-icon>
             </v-btn>
-            <v-col class="cap text-h5 pt-5">なにをがんばろう？</v-col>
           </v-row>
         </v-container>
         <v-card-text>
