@@ -1,9 +1,9 @@
 <template>
   <v-row class="mt-3" justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn large class="record orange lighten-5 brown--text text--darken-6" v-bind="attrs" v-on="on" max-height="200" max-width="200" style="align-items: center">
-          <p style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">いままでの<br />がんばり</p>
+        <v-btn large class="record orange lighten-5 brown--text text--darken-6" v-bind="attrs" v-on="on">
+          いままでの<br />がんばり
         </v-btn>
       </template>
       <v-card>

@@ -7,7 +7,7 @@
           <v-btn text class="one white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
         <realGoalList class="one" :goalList="goalList" />
-        <RecordList class="two" :recordList="recordList"/>
+        <RecordList class="one" :recordList="recordList"/>
         <PopUps class="two"/>
         <v-img class="three cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
           <p class="grey--text text--darken-6" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまで<br />あと{{ untilgoal }}にち</p>

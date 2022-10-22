@@ -1,7 +1,7 @@
 <template>
   <v-container class="">
     <!--結果報告ポップアップ-->
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-row justify="end">
           <v-img class="water" v-bind="attrs" v-on="on" src="@/assets/water.png" max-height="180" max-width="120" style="align-items: center">

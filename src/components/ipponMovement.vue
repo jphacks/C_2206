@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!--結果報告ポップアップ-->
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <div v-if="ippon_Move">
           <v-btn class="pickup" color="primary" dark v-bind="attrs" v-on="on">ひっこぬく</v-btn>
