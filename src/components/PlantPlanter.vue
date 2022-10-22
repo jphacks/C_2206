@@ -63,7 +63,6 @@ export default {
 <style scoped>
 .container {
   position: relative;
-  background-color: aqua;
   height: max-content;
   width: 100%;
 }
