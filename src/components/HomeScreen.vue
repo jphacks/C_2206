@@ -4,11 +4,8 @@
     <v-row justify="end">
       <v-btn text class="white--text" style="text-transform: none" @click="signout">log out</v-btn>
     </v-row>
-    <v-row style="height: 40px"></v-row>
-    <v-row justify="center" align-content="center" class="grey lighten-1 white--text mt-16 mx-16" style="height: 70px">
-      <!--PopUp.vueで設定した期間から残りの時間を導いてuntilgoalに代入-->
-      <div>しゅうかくまであと{{ untilgoal }}にち</div>
-    </v-row>
+    
+    
     <v-row style="height: 150px"></v-row>
     <v-row class="brown lighten-1 white--text mt-16" style="height: 270px"> </v-row>
   </v-container>

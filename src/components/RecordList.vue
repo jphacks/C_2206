@@ -2,9 +2,9 @@
   <v-row class="mt-3" justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-img v-bind="attrs" v-on="on" src="@/assets/sun.png" max-height="200" max-width="200" style="align-items: center">
-          <p style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">いままでの<br />きろくを<br />みる</p>
-        </v-img>
+        <v-btn large class="record orange lighten-5 brown--text text--darken-6" v-bind="attrs" v-on="on" max-height="200" max-width="200" style="align-items: center">
+          <p style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">いままでの<br />がんばり</p>
+        </v-btn>
       </template>
       <v-card>
         <v-toolbar color="#009A5B" dark class="mx-auto text-h5"> いままでのきろく </v-toolbar>
@@ -59,3 +59,8 @@ export default {
   computed: {},
 };
 </script>
+<style>
+.record{
+  margin-right: -66vw;
+}
+</style>

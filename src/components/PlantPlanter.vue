@@ -63,9 +63,9 @@ export default {
 <style scoped>
 .container {
   position: relative;
-  background-color: aqua;
   height: max-content;
   width: 100%;
+  margin-top: 26vh;
 }
 .container > .leaves {
   position: absolute;
