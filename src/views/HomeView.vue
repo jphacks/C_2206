@@ -14,12 +14,11 @@
           <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまで<br />あと{{ untilgoal }}にち</p>
         </v-img>
 
-        <ReportGoal/>
+        <ReportGoal />
         <RecordList :recordList="recordList" />
 
-        <PlantPlanter :goalTitle="goalTitle" />
+        <PlantPlanter :goalTitle="goalTitle" :achevement="achevement" :dayRate="dayRate" />
         <v-row style="height: 230px"></v-row>
-
       </v-container>
     </div>
     <div v-else>loading...</div>
@@ -39,14 +38,12 @@ const getDate = (date) => {
   return `${year}/${month}/${day}`;
 };
 
-
 const getHourMinuteStr = (date) => {
   const minutes = Math.floor(date.getTime() / 1000 / 60);
   const hour = Math.floor(minutes / 60);
   const minute = minutes % 60;
   return `${hour}時間${minute}分`;
 };
-
 
 export default {
   name: "HomeView",
@@ -130,6 +127,12 @@ export default {
           };
         }
       });
+    },
+    achevement() {
+      return this.$store.getters["firebase/getAchevemetntById"](this.currentGoalId);
+    },
+    dayRate() {
+      return this.$store.getters["firebase/getDayRate"](this.currentGoalId);
     },
   },
 };

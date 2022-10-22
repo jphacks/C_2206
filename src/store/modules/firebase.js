@@ -35,20 +35,34 @@ const getters = {
       if (goal) return new Date(goal.endDate.toDate().getTime() - new Date().getTime());
     }
   },
-  getRecordsByGoalId: (state) => (goalid)=>{
+  getRecordsByGoalId: (state) => (goalid) => {
     if (state.userInfo && state.userInfo.records) {
-      return state.userInfo.records.filter((record) => {if(record.goalId == goalid){
-        return record
-      }});
+      return state.userInfo.records.filter((record) => {
+        if (record.goalId == goalid) {
+          return record;
+        }
+      });
     }
   },
   getAchevemetntById: (state) => (goalid) => {
     if (state.userInfo && state.userInfo.recordSummary) {
-      return state.userInfo.recordSummary.filter((summary) => {if(summary.goalId == goalid){
-        return summary.achevement
-      }})[0];
+      return state.userInfo.recordSummary.filter((summary) => {
+        if (summary.goalId == goalid) {
+          return summary.achevement;
+        }
+      })[0];
     }
-  }
+  },
+  getDayRate: (state) => (id) => {
+    if (state.userInfo && state.userInfo.goals) {
+      const goal = state.userInfo.goals.filter((goal) => goal.id == id)[0];
+      if (goal) {
+        const until = new Date(goal.endDate.toDate().getTime() - new Date().getTime());
+        const period = new Date(goal.endDate.toDate().getTime() - goal.endDate.toDate().getTime());
+        return until / period
+      }
+    }
+  },
 };
 const actions = {
   // ユーザーの情報をfirebaseから再読み込みする
