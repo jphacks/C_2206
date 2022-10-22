@@ -24,9 +24,8 @@
         <ReportGoal />
         <RecordList :recordList="recordList" />
 
+        <PlantPlanter :goalTitle="goalTitle" :achevement="achevement" :dayRate="dayRate" />
         <v-row style="height: 230px"></v-row>
-
-        <PlantPlanter :goalTitle="goalTitle" />
       </v-container>
     </div>
     <div v-else>
@@ -151,6 +150,12 @@ export default {
           };
         }
       });
+    },
+    achevement() {
+      return this.$store.getters["firebase/getAchevemetntById"](this.currentGoalId);
+    },
+    dayRate() {
+      return this.$store.getters["firebase/getDayRate"](this.currentGoalId);
     },
   },
 };
