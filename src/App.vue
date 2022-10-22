@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark> PlanPlant</v-app-bar>
     <v-main>
       <router-view></router-view>
     </v-main>
