@@ -4,28 +4,19 @@
       <v-container class="home-content">
         <!--ホーム画面のレイアウト-->
         <v-row justify="end">
-          <v-btn text class="white--text" style="text-transform: none" @click="signOut">log out</v-btn>
+          <v-btn text class="one white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
-        <PopUps />
-        <v-row style="height: 40px"></v-row>
-        <v-row justify="center" align-content="center" class="grey lighten-1 white--text mt-16 mx-16" style="height: 70px">
-          <!--PopUp.vueで設定した期間から残りの時間を導いてuntilgoalに代入-->
-          <div>しゅうかくまであと{{ untilgoal }}にち</div>
-        </v-row>
-        <v-row style="height: 150px"></v-row>
-        <v-row class="brown lighten-1 white--text mt-16" style="height: 270px"> </v-row>
-        <realGoalList :goalList="goalList" />
-
-        <v-img class="cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
-          <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまで<br />あと{{ untilgoal }}にち</p>
+        <realGoalList class="one" :goalList="goalList" />
+        <RecordList class="two" :recordList="recordList"/>
+        <PopUps class="two"/>
+        <v-img class="three cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
+          <p class="grey--text text--darken-6" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまで<br />あと{{ untilgoal }}にち</p>
         </v-img>
+        <ReportGoal class="three"/>
+        
+        <ipponMovement class="one"  v-if="rawIpponName" :rawIpponName="rawIpponName"/>
+        <PlantPlanter :goalTitle="goalTitle" :achevement="achevement" :dayRate="dayRate" />
 
-        <ReportGoal />
-        <RecordList :recordList="recordList" />
-
-        <v-row style="height: 230px"></v-row>
-
-        <PlantPlanter :goalTitle="goalTitle" />
       </v-container>
     </div>
     <div v-else>
@@ -52,6 +43,7 @@ import PopUps from "@/components/PopUps.vue";
 import RecordList from "@/components/RecordList.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
+import ipponMovement from "@/components/ipponMovement.vue";
 import realGoalList from "@/components/realGoalList.vue";
 
 const getDate = (date) => {
@@ -66,12 +58,23 @@ const getHourMinuteStr = (date) => {
   return `${hour}時間${minute}分`;
 };
 
+const title2ipponName = {
+  べんきょう: "study",
+  うんどう: "sport",
+  どくしょ: "reading",
+  がいこくご: "language",
+  おんがく: "music",
+  はやおき: "getup",
+  えをかく: "art",
+};
+
 export default {
   name: "HomeView",
   components: {
     PopUps,
     PlantPlanter,
     ReportGoal,
+    ipponMovement,
     realGoalList,
     RecordList,
   },
@@ -149,6 +152,23 @@ export default {
         }
       });
     },
+    achevement() {
+      return this.$store.getters["firebase/getAchevemetntById"](this.currentGoalId);
+    },
+    dayRate() {
+      return this.$store.getters["firebase/getDayRate"](this.currentGoalId);
+    },
+    rawIpponName() {
+      if (this.untilgoal <= 0) {
+        const goal = this.$store.getters["firebase/getOneGoal"](this.currentGoalId);
+        console.log(goal.title)
+        console.log(title2ipponName[goal.title])
+        if (goal && goal.title) {
+          return title2ipponName[goal.title];
+        }
+      }
+      return undefined;
+    },
   },
 };
 </script>
@@ -166,43 +186,24 @@ export default {
   height: 100vh;
 }
 
-.close {
-  margin-right: -15px;
+.one{
+  z-index: 30;
+  position: relative;
+}
+
+.two{
+  z-index: 20;
+  position: relative;
+}
+
+.three{
+  z-index: 10;
+  position: relative;
 }
 
 .cloud {
   margin-top: -130px;
   margin-left: -10px;
-}
-
-.cursive {
-  font-family: cursive;
-}
-
-.soil {
-  background: rgb(166, 137, 113);
-  height: 200px;
-  width: 200px;
-}
-
-.ellipse {
-  width: 200px;
-  height: 100px;
-  background: rgb(255, 255, 255);
-  margin-top: 100px;
-  margin-left: 110px;
-  margin-right: 110px;
-  -moz-border-radius: 100px / 50px;
-  -webkit-border-radius: 100px / 50px;
-  border-radius: 100px / 50px;
-}
-
-.watering {
-  margin-left: 50px;
-  margin-top: 25px;
-  color: black;
-  font-size: xx-large;
-  font-weight: bold;
 }
 
 .v-progress-circular {

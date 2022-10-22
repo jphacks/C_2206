@@ -2,32 +2,35 @@
   <v-row class="mt-n14">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-img class="ml-n3" v-bind="attrs" v-on="on" src="@/assets/sun.png" max-height="200" max-width="200"
-          style="align-items: center">
-          <p class="grey--text text--darken1"
-            style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">
-            もくひょう<br />せってい</p>
+        <v-img class="ml-n3" v-bind="attrs" v-on="on" src="@/assets/sun.png" max-height="200" max-width="200" style="align-items: center">
+          <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">もくひょう<br />せってい</p>
         </v-img>
       </template>
       <v-card>
-        <v-toolbar color="#009A5B" dark class="mx-auto text-h5"> どのようにがんばろう？ </v-toolbar>
+        <v-container class="green darken-1 white--text">
+          <v-row class="" align-content="center">
+            <v-btn icon absolute right justify-content="space-between" class="cursive close" @click="closeDialog">
+              <v-icon color="white">mdi-close</v-icon>
+            </v-btn>
+            <v-col class="cap text-h5 pt-5">なにをがんばろう？</v-col>
+          </v-row>
+        </v-container>
         <v-card-text>
           <v-container>
             <v-row>
               <!-- 「なにを」 -->
-              <v-col cols="12" sm="6" class="pt-7 pl-14">
-                <p class="text-h5">なにを</p>
+              <v-col cols="12" sm="6" class="pt-7">
+                <p class="cap text-h5">なにを</p>
               </v-col>
 
               <v-col cols="12" sm="6">
-                <v-select :items="['べんきょう', 'うんどう', 'おてつだい', 'どくしょ']" filled label="かならずえらんでね" dense required
-                  v-model="what"></v-select>
+                <v-select :items="['べんきょう', 'うんどう', 'どくしょ', 'がいこくご', 'おんがく', 'はやおき', 'えをかく']" filled label="かならずえらんでね" dense required v-model="what"></v-select>
               </v-col>
 
               <!-- 「くわしくかこう」 -->
-              <v-col cols="12" sm="6" class="pt-4 pl-14">
+              <v-col cols="12" sm="6" class="pt-4">
                 <div v-if="inits">
-                  <p class="text-h7">がんばることをくわしくかこう<br />(さらあらい、ジョギングなど)</p>
+                  <p class="cap text-h7">がんばることをくわしくかこう<br />(どくしょ、ジョギングなど)</p>
                 </div>
               </v-col>
 
@@ -39,16 +42,15 @@
 
               <!-- 「どのぐらい」 -->
 
-              <v-col cols="12" sm="6" class="pl-14">
+              <v-col cols="12" sm="6" class="">
                 <div v-if="inits">
-                  <p class="text-h5">どのぐらい</p>
+                  <p class="cap text-h5">どのぐらい</p>
                 </div>
               </v-col>
 
               <v-col cols="12" sm="6">
                 <div v-if="inits">
-                  <v-select :items="['かい', 'さつ', 'じかん', 'こ']" filled label="かならずえらんでね" dense required v-model="init">
-                  </v-select>
+                  <v-select :items="['かい', 'さつ', 'じかん', 'こ']" filled label="かならずえらんでね" dense required v-model="init"> </v-select>
                 </div>
               </v-col>
 
@@ -68,8 +70,8 @@
 
               <!-- 「じかん」-->
               <v-col cols="12" sm="12">
-                <div v-if="howMuchTime">
-                  <vue-timepicker v-model="howLong"></vue-timepicker>
+                <div v-if="howMuchTime" class="time">
+                  <vue-timepicker placeholder="じかん：ふん" v-model="howLong"></vue-timepicker>
                 </div>
               </v-col>
 
@@ -82,9 +84,9 @@
 
               <!-- 「カレンダー」 -->
 
-              <v-col cols="12" sm="12" class="pl-10">
+              <v-col cols="12" sm="12" class="">
                 <div v-if="tillWhenToWhen">
-                  <p class="text-h6">いつから・いつまでに</p>
+                  <p class="cap text-h6">いつから・いつまでに</p>
                 </div>
               </v-col>
               <v-col cols="12">
@@ -93,32 +95,32 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
-                          <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false"
-                            transition="scale-transition" offset-y max-width="290px" min-width="auto">
+                          <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                              <v-text-field v-model="date" label="いつから" persistent-hint prepend-icon="mdi-calendar"
-                                v-bind="attrs" v-on="on"></v-text-field>
+                              <v-text-field v-model="date" label="いつから" persistent-hint prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
                             </template>
-                            <v-date-picker v-model="date" no-title @input="menu1 = false"
-                              :min="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)">
+                            <v-date-picker v-model="date" no-title @input="menu1 = false" :min="new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10)">
                             </v-date-picker>
                           </v-menu>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false"
-                            transition="scale-transition" offset-y max-width="290px" min-width="auto">
+                          <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false" transition="scale-transition" offset-y max-width="290px" min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                              <v-text-field v-model="date2" label="いつまで" persistent-hint prepend-icon="mdi-calendar"
-                                v-bind="attrs" v-on="on"></v-text-field>
+                              <v-text-field v-model="date2" label="いつまで" persistent-hint prepend-icon="mdi-calendar" v-bind="attrs" v-on="on"></v-text-field>
                             </template>
-                            <v-date-picker v-model="date2" no-title @input="menu2 = false"
-                              :min="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)">
+                            <v-date-picker v-model="date2" no-title @input="menu2 = false" :min="new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10)">
                             </v-date-picker>
                           </v-menu>
                         </v-col>
                         <v-row>
                           <div v-if="dateIsWrong">
                             <small>「いつまで」が「いつから」よりもむかしだよ！</small>
+                          </div>
+                          <div v-if="timeIsWrong">
+                            <small>じかんがおかしいよ！</small>
+                          </div>
+                          <div v-if="intIsWrong">
+                            <small>なにかがにゅうりょくされてないよ！</small>
                           </div>
                         </v-row>
                       </v-row>
@@ -131,10 +133,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDialog"> やめる </v-btn>
-          <div v-if="OKButton">
-            <v-btn x-large color="#C75959" dark @click="makeGoal"> OK！ </v-btn>
-          </div>
+
+          <v-row v-if="OKButton" align-content="center" class="mb-6">
+            <v-btn x-large class="cursive white--text text-h4 pr-7" color="red accent-2" @click="makeGoal">OK!</v-btn>
+          </v-row>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -163,6 +165,8 @@ export default {
     name: undefined,
     dialog: false,
     dateError: false,
+    timeError: false,
+    intError: false,
   }),
   methods: {
     //初期の表示設定
@@ -180,13 +184,33 @@ export default {
       this.dialog = false;
     },
     makeGoal() {
-      let start = new Date(this.date)
-      let end = new Date(this.date2)
+      let start = new Date(this.date);
+      let end = new Date(this.date2);
+      let time = this.howLong;
+      let int = this.howMuch;
+      console.log(time);
 
       if (start.getTime() > end.getTime()) {
-        this.dateError = true
-        console.log("Date Error")
-        return 1
+        this.dateError = true;
+        console.log("Date Error");
+        return 1;
+      }
+
+      if (time && time["HH"] == "00" && time["mm"] == "00") {
+        this.timeError = true;
+        console.log("Time Error");
+        return 1;
+      }
+
+      if (time == undefined && int == undefined) {
+        if (time == undefined) {
+          this.intError = true;
+        } else if (int == undefined) {
+          this.nullError = true;
+        }
+
+        console.log("Null Error");
+        return 1;
       }
 
       let value = undefined;
@@ -259,9 +283,15 @@ export default {
     dateIsWrong() {
       return this.dateError == true;
     },
+    timeIsWrong() {
+      return this.timeError == true;
+    },
+    intIsWrong() {
+      return this.intError == true;
+    },
     OKButton() {
-      return this.date != null && this.date2 != null
-    }
+      return this.date != null && this.date2 != null;
+    },
   },
   watch: {
     date() {
@@ -275,8 +305,16 @@ export default {
 //dataプロパティが更新されたらcomputedが更新されるようにする
 </script>
 
-<style>
+<style scoped>
 small {
   color: red;
+}
+
+.time {
+  text-align: center;
+}
+
+.cap {
+  text-align: center;
 }
 </style>

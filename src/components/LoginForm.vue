@@ -4,7 +4,7 @@
       <div class="logo">
         <img src="../assets/logo_with_ippon.png" />
       </div>
-      <v-row class="mx-14 mt-11" align-content="center">
+      <v-row class="mx-14 mt-6" align-content="center">
         <v-text-field background-color="#e5e5e5" clearable filled prepend-icon="mdi-account-circle" label="メールアドレス" v-model="email" />
       </v-row>
       <v-row class="mx-14 mt-2" align-content="center">
@@ -22,13 +22,13 @@
         />
       </v-row>
       <v-row class="mx-10" align-content="center">
-        <v-card-actions class="mx-auto mt-15">
+        <v-card-actions class="mx-auto mt-5">
           <v-btn class="px-16 py-6 text-body-1" color="primary" @click="login">ログイン</v-btn>
         </v-card-actions>
         <ErrorMsg />
       </v-row>
       <v-row align-content="center">
-        <router-link to="signup" class="mx-auto mt-10">アカウントを作成</router-link>
+        <router-link to="signup" class="mx-auto mt-4">アカウントを作成</router-link>
       </v-row>
     </v-container>
   </v-form>
