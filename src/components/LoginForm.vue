@@ -22,13 +22,13 @@
         />
       </v-row>
       <v-row class="mx-10" align-content="center">
-        <v-actions class="mx-auto mt-15">
-          <v-btn class="info px-16 py-6 text-body-1" @click="login">ログイン</v-btn>
-        </v-actions>
-        <ErrorMsg/>
+        <v-card-actions class="mx-auto mt-15">
+          <v-btn class="px-16 py-6 text-body-1" color="primary" @click="login">ログイン</v-btn>
+        </v-card-actions>
+        <ErrorMsg />
       </v-row>
       <v-row align-content="center">
-        <a class="mx-auto mt-10">アカウントを作成</a>
+        <router-link to="signup" class="mx-auto mt-10">アカウントを作成</router-link>
       </v-row>
     </v-container>
   </v-form>

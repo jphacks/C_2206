@@ -15,9 +15,9 @@ export default {
 </script>
 
 <style>
-.home {
+.top {
   width: 100%;
   height: 100vh;
-  background-image: url("../assets/background.png");
+  background-image: url("@/assets/background.png");
 }
 </style>
