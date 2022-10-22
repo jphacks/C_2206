@@ -24,13 +24,13 @@
               </v-col>
 
               <v-col cols="12" sm="6">
-                <v-select :items="['べんきょう', 'うんどう', 'おてつだい', 'どくしょ']" filled label="かならずえらんでね" dense required v-model="what"></v-select>
+                <v-select :items="['べんきょう', 'うんどう', 'どくしょ', 'がいこくご', 'おんがく', 'はやおき', 'えをかく']" filled label="かならずえらんでね" dense required v-model="what"></v-select>
               </v-col>
 
               <!-- 「くわしくかこう」 -->
               <v-col cols="12" sm="6" class="pt-4">
                 <div v-if="inits">
-                  <p class="cap text-h7">がんばることをくわしくかこう<br />(さらあらい、ジョギングなど)</p>
+                  <p class="cap text-h7">がんばることをくわしくかこう<br />(どくしょ、ジョギングなど)</p>
                 </div>
               </v-col>
 

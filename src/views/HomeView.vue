@@ -14,8 +14,8 @@
         </v-row>
         <v-row style="height: 150px"></v-row>
         <v-row class="brown lighten-1 white--text mt-16" style="height: 270px"> </v-row>
-        <ipponMovement />
-        <realGoalList :goalList="goalList" />
+        <ipponMovement v-if="rawIpponName" :rawIpponName="rawIpponName" />
+        <realGoalList  style="z-index: 0;"  :goalList="goalList" />
 
         <v-img class="cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
           <p class="grey--text text--darken1" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">しゅうかくまで<br />あと{{ untilgoal }}にち</p>
@@ -24,7 +24,7 @@
         <ReportGoal />
         <RecordList :recordList="recordList" />
 
-        <PlantPlanter :goalTitle="goalTitle" :achevement="achevement" :dayRate="dayRate" />
+        <!-- <PlantPlanter style="z-index: 0;" :goalTitle="goalTitle" :achevement="achevement" :dayRate="dayRate" /> -->
         <v-row style="height: 230px"></v-row>
       </v-container>
     </div>
@@ -50,7 +50,7 @@
 import { mapState } from "vuex";
 import PopUps from "@/components/PopUps.vue";
 import RecordList from "@/components/RecordList.vue";
-import PlantPlanter from "@/components/PlantPlanter.vue";
+// import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
 import ipponMovement from "@/components/ipponMovement.vue";
 import realGoalList from "@/components/realGoalList.vue";
@@ -67,11 +67,21 @@ const getHourMinuteStr = (date) => {
   return `${hour}時間${minute}分`;
 };
 
+const title2ipponName = {
+  べんきょう: "study",
+  うんどう: "sport",
+  どくしょ: "reading",
+  がいこくご: "language",
+  おんがく: "music",
+  はやおき: "getup",
+  えをかく: "art",
+};
+
 export default {
   name: "HomeView",
   components: {
     PopUps,
-    PlantPlanter,
+    // PlantPlanter,
     ReportGoal,
     ipponMovement,
     realGoalList,
@@ -156,6 +166,17 @@ export default {
     },
     dayRate() {
       return this.$store.getters["firebase/getDayRate"](this.currentGoalId);
+    },
+    rawIpponName() {
+      if (this.untilgoal){//this.untilgoal <= 0) {
+        const goal = this.$store.getters["firebase/getOneGoal"](this.currentGoalId);
+        console.log(goal.title)
+        console.log(title2ipponName[goal.title])
+        if (goal && goal.title) {
+          return title2ipponName[goal.title];
+        }
+      }
+      return undefined;
     },
   },
 };

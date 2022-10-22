@@ -9,7 +9,6 @@
       </template>
       <v-card>
         <v-container class="grass">
-          
           <div v-if="getup_IPPON">
             <v-img class="img" src="@/assets/IPPON/getUpIppon.gif"></v-img>
           </div>
@@ -46,20 +45,20 @@
 <script>
 import { mapState } from "vuex";
 
-
 export default {
   name: "ipponMovement",
+  props: {
+    rawIpponName: String,
+  },
   data: () => ({
     dialog: false,
-    ipponName: 'getup',
-
+    ipponName: this.rawIpponName,
   }),
 
   methods: {
     closeDialog_InameReset() {
       this.dialog = false;
       this.ipponName = undefined;
-
     },
     sleep(waitMsec) {
       var startMsec = new Date();
@@ -67,7 +66,7 @@ export default {
       // 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
       while (new Date() - startMsec < waitMsec);
       this.dialog = false;
-    }
+    },
   },
 
   computed: {
@@ -78,31 +77,31 @@ export default {
     },
 
     getup_IPPON() {
-      return this.ipponName === 'getup';
+      return this.ipponName === "getup";
     },
 
     art_IPPON() {
-      return this.ipponName === 'art';
+      return this.ipponName === "art";
     },
 
     language_IPPON() {
-      return this.ipponName === 'language';
+      return this.ipponName === "language";
     },
 
     music_IPPON() {
-      return this.ipponName === 'music';
+      return this.ipponName === "music";
     },
 
     reading_IPPON() {
-      return this.ipponName === 'reading';
+      return this.ipponName === "reading";
     },
 
     sports_IPPON() {
-      return this.ipponName === 'sports';
+      return this.ipponName === "sports";
     },
 
     study_IPPON() {
-      return this.ipponName === 'study';
+      return this.ipponName === "study";
     },
   },
 };
@@ -113,7 +112,7 @@ export default {
   background-color: #80a491;
 }
 
-.close{
+.close {
   margin-top: -92vh;
   margin-left: 0px;
 }
@@ -123,6 +122,4 @@ export default {
   min-height: 600px;
   min-width: 300px;
 }
-
-
 </style>
