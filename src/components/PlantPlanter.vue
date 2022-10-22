@@ -65,6 +65,7 @@ export default {
   position: relative;
   height: max-content;
   width: 100%;
+  margin-top: 26vh;
 }
 .container > .leaves {
   position: absolute;

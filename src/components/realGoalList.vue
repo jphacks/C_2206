@@ -2,12 +2,12 @@
   <v-row class="mt-3" justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-img v-bind="attrs" v-on="on" src="@/assets/cloud.png" style="align-items: center">
-          <p style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">もくひょうの<br />いちらん</p>
-        </v-img>
+        <v-btn absolute right large class="goal orange lighten-5 brown--text text--darken-6"    v-bind="attrs" v-on="on" style="align-items: center">
+          <p style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">せっていした<br />もくひょう</p>
+        </v-btn>
       </template>
       <v-card>
-        <v-toolbar color="#009A5B" dark class="mx-auto text-h5"> もくひょうのいちらん </v-toolbar>
+        <v-toolbar color="#009A5B" dark class="mx-auto text-h5"> もくひょういちらん </v-toolbar>
         <v-card-text>
           <v-container>
             <template>
@@ -75,3 +75,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.goal{
+  margin-top: 8vh;
+  margin-right: -3vw;
+}
+</style>

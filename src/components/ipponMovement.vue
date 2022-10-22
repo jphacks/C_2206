@@ -4,7 +4,7 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <div v-if="ippon_Move">
-          <v-btn color="primary" dark v-bind="attrs" v-on="on">ひっこぬく</v-btn>
+          <v-btn class="pickup" color="primary" dark v-bind="attrs" v-on="on">ひっこぬく</v-btn>
         </div>
       </template>
       <v-card>
@@ -124,5 +124,8 @@ export default {
   min-width: 300px;
 }
 
-
+.pickup{
+  margin-left: 28vw;
+  margin-top: 2vh;
+}
 </style>
