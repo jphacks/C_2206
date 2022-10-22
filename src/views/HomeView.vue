@@ -7,7 +7,14 @@
           <v-btn text class="white--text" style="text-transform: none" @click="signOut">log out</v-btn>
         </v-row>
         <PopUps />
-
+        <v-row style="height: 40px"></v-row>
+        <v-row justify="center" align-content="center" class="grey lighten-1 white--text mt-16 mx-16" style="height: 70px">
+          <!--PopUp.vueで設定した期間から残りの時間を導いてuntilgoalに代入-->
+          <div>しゅうかくまであと{{ untilgoal }}にち</div>
+        </v-row>
+        <v-row style="height: 150px"></v-row>
+        <v-row class="brown lighten-1 white--text mt-16" style="height: 270px"> </v-row>
+        <ipponMovement />
         <realGoalList :goalList="goalList" />
 
         <v-img class="cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
@@ -21,7 +28,21 @@
         <v-row style="height: 230px"></v-row>
       </v-container>
     </div>
-    <div v-else>loading...</div>
+    <div v-else>
+      <div class="bg">
+        <v-container>
+          <v-row class="mx-auto mt-11" justify="center">
+            <v-progress-circular :size="80" :width="7" color="green" indeterminate></v-progress-circular>
+          </v-row>
+          <v-row class="mt-6" align-content="center" justify="center">
+            <h3 text-align="center">ちょっとまってね。。。</h3>
+          </v-row>
+          <div class="mt-14 ippon">
+            <img src="../assets/loading.png" />
+          </div>
+        </v-container>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -31,6 +52,7 @@ import PopUps from "@/components/PopUps.vue";
 import RecordList from "@/components/RecordList.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
+import ipponMovement from "@/components/ipponMovement.vue";
 import realGoalList from "@/components/realGoalList.vue";
 
 const getDate = (date) => {
@@ -51,6 +73,7 @@ export default {
     PopUps,
     PlantPlanter,
     ReportGoal,
+    ipponMovement,
     realGoalList,
     RecordList,
   },
@@ -139,6 +162,12 @@ export default {
 </script>
 
 <style>
+.bg {
+  width: 100%;
+  height: 100vh;
+  background-image: url("../assets/background.png");
+}
+
 .home-content {
   background-color: rgb(202, 225, 234);
   width: 100%;
@@ -182,5 +211,18 @@ export default {
   color: black;
   font-size: xx-large;
   font-weight: bold;
+}
+
+.v-progress-circular {
+  margin: 1rem;
+}
+
+.ippon {
+  text-align: center;
+}
+
+.ippon img {
+  width: 65%;
+  height: auto;
 }
 </style>

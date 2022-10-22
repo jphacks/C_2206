@@ -4,6 +4,7 @@ import HomeView from "../views/HomeView.vue";
 import SignUpView from "../views/SignUpView.vue";
 import TopView from "../views/TopView.vue";
 import AboutView from "@/views/AboutView";
+import NotfoundView from "../views/NotfoundView.vue";
 import store from "@/store/index.js";
 import { useUser } from "@/firebase.js";
 Vue.use(VueRouter);
@@ -33,7 +34,7 @@ const routes = [
   {
     name: "notFound",
     path: "*",
-    component: TopView,
+    component: NotfoundView,
     meta: { title: "お探しのページは見つかりませんでした" },
   },
 ];
