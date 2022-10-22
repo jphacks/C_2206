@@ -168,7 +168,7 @@ export default {
       return this.$store.getters["firebase/getDayRate"](this.currentGoalId);
     },
     rawIpponName() {
-      if (this.untilgoal){//this.untilgoal <= 0) {
+      if (this.untilgoal <= 0) {
         const goal = this.$store.getters["firebase/getOneGoal"](this.currentGoalId);
         console.log(goal.title)
         console.log(title2ipponName[goal.title])

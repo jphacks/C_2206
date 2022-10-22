@@ -47,13 +47,13 @@ import { mapState } from "vuex";
 
 export default {
   name: "ipponMovement",
-  props: {
-    rawIpponName: String,
+  props: ["rawIpponName"],
+  data: (props) => {
+    return {
+      dialog: false,
+      ipponName: props.rawIpponName,
+    };
   },
-  data: () => ({
-    dialog: false,
-    ipponName: this.rawIpponName,
-  }),
 
   methods: {
     closeDialog_InameReset() {
