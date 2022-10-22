@@ -5,8 +5,8 @@
       <template v-slot:activator="{ on, attrs }">
         <v-row justify="end">
           <v-img class="water" v-bind="attrs" v-on="on" src="@/assets/water.png" max-height="180" max-width="120" style="align-items: center">
-          <p class="white--text text-h5 pt-10" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">水をやる</p>
-        </v-img>
+            <p class="white--text text-h5 pt-10" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: auto">水をやる</p>
+          </v-img>
         </v-row>
       </template>
       <v-card>
@@ -112,6 +112,7 @@ export default {
         const data = {
           id: uuid(),
           goalId: goalId,
+          createdAt: Timestamp.now(),
           value: {
             type: type,
             value: value,
@@ -146,8 +147,7 @@ export default {
 </script>
 
 <style>
-
-.water{
+.water {
   margin-top: -110px;
   margin-right: 10px;
 }
