@@ -14,6 +14,7 @@
         </v-row>
         <v-row style="height: 150px"></v-row>
         <v-row class="brown lighten-1 white--text mt-16" style="height: 270px"> </v-row>
+        <ipponMovement />
         <realGoalList :goalList="goalList" />
 
         <v-img class="cloud" src="@/assets/cloud.png" max-height="600" max-width="800" style="align-items: center">
@@ -52,6 +53,7 @@ import PopUps from "@/components/PopUps.vue";
 import RecordList from "@/components/RecordList.vue";
 import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
+import ipponMovement from "@/components/ipponMovement.vue";
 import realGoalList from "@/components/realGoalList.vue";
 
 const getDate = (date) => {
@@ -72,6 +74,7 @@ export default {
     PopUps,
     PlantPlanter,
     ReportGoal,
+    ipponMovement,
     realGoalList,
     RecordList,
   },
