@@ -41,7 +41,7 @@
 import { mapState } from "vuex";
 import PopUps from "@/components/PopUps.vue";
 import RecordList from "@/components/RecordList.vue";
-// import PlantPlanter from "@/components/PlantPlanter.vue";
+import PlantPlanter from "@/components/PlantPlanter.vue";
 import ReportGoal from "@/components/ReportGoal.vue";
 import ipponMovement from "@/components/ipponMovement.vue";
 import realGoalList from "@/components/realGoalList.vue";
@@ -72,7 +72,7 @@ export default {
   name: "HomeView",
   components: {
     PopUps,
-    // PlantPlanter,
+    PlantPlanter,
     ReportGoal,
     ipponMovement,
     realGoalList,
